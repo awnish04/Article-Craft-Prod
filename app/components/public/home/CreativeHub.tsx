@@ -197,17 +197,16 @@ export default function CreativeHub() {
           {/* Vertical Tabs - Desktop */}
           <div className="hidden md:flex flex-col gap-12 ml-2">
             {spaces.map((space, idx) => (
-              <motion.button
-                key={idx}
-                onClick={() => setActiveTab(idx)}
-                className={`relative flex flex-col items-center justify-center gap-2 px-2 py-4 rounded-full transition-all duration-300 min-h-[100px] cursor-pointer ${
-                  activeTab === idx
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-card text-muted-foreground hover:bg-muted shadow-md"
-                }`}
-                whileHover={{ scale: activeTab === idx ? 1.05 : 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <button
+                  key={idx}
+                  onClick={() => setActiveTab(idx)}
+                  className={`h-32 w-10 rounded-full text-xs font-medium transition-all flex flex-col items-center justify-center gap-2 ${
+                    activeTab === idx
+                      ? "bg-primary text-white shadow-md"
+                      : "bg-background border border-border hover:border-primary"
+                  }`}
+                >
+
                 <space.Icon className="w-5 h-5" />
                 <span
                   className="text-xs font-semibold tracking-wide"
@@ -215,7 +214,7 @@ export default function CreativeHub() {
                 >
                   {space.name}
                 </span>
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>

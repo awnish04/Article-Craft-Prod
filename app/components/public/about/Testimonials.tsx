@@ -2,9 +2,12 @@
 
 import Image, { StaticImageData } from "next/image";
 import Reveal from "@/components/public/shared/Reveal";
-import team1 from "@/assets/team-1.jpg";
-import team2 from "@/assets/team-2.jpg";
-import team3 from "@/assets/team-3.jpg";
+import team1 from "@/assets/TeamImages/Team_1.jpg";
+import team2 from "@/assets/TeamImages/Team_2.jpg";
+import team3 from "@/assets/TeamImages/Team_3.jpg";
+import team4 from "@/assets/TeamImages/Team_4.jpg";
+import team5 from "@/assets/TeamImages/Team_5.jpg";
+import team6 from "@/assets/TeamImages/Team_6.jpg";
 
 interface Testimonial {
   name: string;
@@ -36,19 +39,19 @@ const testimonials: Testimonial[] = [
     name: "Tukanath Paudel",
     role: "Associate Project Manager",
     text: "The team's dedication to a collaborative environment makes every day exciting. The emphasis on continuous learning and staying ahead of marketing trends has significantly boosted my professional growth.",
-    img: team1,
+    img: team4,
   },
   {
     name: "Basanta Gurung",
     role: "Associate Project Manager",
     text: "The team's commitment to efficiency and continuous improvement is inspiring. The supportive environment and focus on professional growth have significantly enhanced my skills.",
-    img: team2,
+    img: team5,
   },
   {
     name: "Vidha Sapkota",
     role: "UI/UX Designer",
     text: "The team's dedication to creating intuitive and visually appealing user experiences inspires me every day. The collaborative environment, combined with a focus on innovation and seamless design, allows me to continually enhance my skills and contribute to impactful projects.",
-    img: team3,
+    img: team6,
   },
 ];
 

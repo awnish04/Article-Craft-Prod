@@ -5,10 +5,10 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/public/shared/Reveal";
 
-import heroImg2 from "@/assets/hero-office-2.jpg";
-import heroImg3 from "@/assets/hero-office-3.jpg";
-import servicesHero from "@/assets/services-hero.jpg";
-import careersHero from "@/assets/careers-hero.jpg";
+import HeroImg1 from "@/assets/HeroImg1.jpg";
+import HeroImg2 from "@/assets/HeroImg2.jpg";
+import HeroImg3 from "@/assets/HeroImg3.jpg";
+import HeroImg4 from "@/assets/HeroImg4.jpg";
 
 type Service = {
   title: string;
@@ -26,22 +26,22 @@ const services: Service[] = [
   {
     title: "Cloud Communication",
     desc: "Modern cloud-based calling, messaging, and video solutions in one place.",
-    img: heroImg2,
+    img: HeroImg1,
   },
   {
     title: "Custom Integrations",
     desc: "Seamlessly connect your tools with custom APIs and workflows.",
-    img: heroImg3,
+    img: HeroImg2,
   },
   {
     title: "AI Voice Solutions",
     desc: "Smart voice automation and analytics powered by AI.",
-    img: servicesHero,
+    img: HeroImg4,
   },
   {
     title: "24/7 Support",
     desc: "Reliable support and monitoring to keep your systems running smoothly.",
-    img: careersHero,
+    img: HeroImg3,
   },
 ];
 

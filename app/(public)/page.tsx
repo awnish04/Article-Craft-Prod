@@ -5,9 +5,13 @@ import Reveal from "@/components/public/shared/Reveal";
 import CreativeHub from "@/components/public/home/CreativeHub";
 import MissionVision from "@/components/public/home/MissionVision";
 
-import heroImg1 from "@/assets/hero-office-1.jpg";
-import heroImg2 from "@/assets/hero-office-2.jpg";
-import heroImg3 from "@/assets/hero-office-3.jpg";
+import BoardRoom_1 from "@/assets/BoardRoom_1.jpg";
+import Office_8 from "@/assets/Office_8.jpg";
+import Office_9 from "@/assets/Office_9.jpg";
+import OfficeGathering_6 from "@/assets/OfficeGathering_6.jpg";
+import Workspace_8 from "@/assets/Workspace_8.jpg";
+import Workspace_9 from "@/assets/Workspace_9.jpg";
+import Workspace_10 from "@/assets/Workspace_10.jpg";
 import StatsSection from "@/components/public/home/StatsSection";
 import Team from "@/components/public/home/Team";
 import {
@@ -71,36 +75,43 @@ export default function Home() {
                 direction={1}
                 className="py-4"
               >
-                {[heroImg1, heroImg2, heroImg3, heroImg1, heroImg2].map(
-                  (img, idx) => (
-                    <Image
-                      key={idx}
-                      src={img}
-                      alt="Office"
-                      width={200}
-                      height={50}
-                      className="mx-2 lg:mx-4 inline-block h-28 w-36 lg:h-32 lg:w-64 rounded-lg object-cover shadow-sm"
-                    />
-                  ),
-                )}
+                {[
+                  BoardRoom_1,
+                  Office_8,
+                  OfficeGathering_6,
+                  Workspace_9,
+                  Workspace_10,
+                ].map((img, idx) => (
+                  <Image
+                    key={idx}
+                    src={img}
+                    alt="Office"
+                    width={200}
+                    height={50}
+                    className="mx-2 lg:mx-4 inline-block h-28 w-36 lg:h-32 lg:w-64 rounded-lg object-cover shadow-sm"
+                  />
+                ))}
               </ScrollVelocityRow>
               <ScrollVelocityRow
                 baseVelocity={6}
                 direction={-1}
                 className="py-4"
               >
-                {[heroImg3, heroImg1, heroImg2, heroImg3, heroImg2].map(
-                  (img, idx) => (
-                    <Image
-                      key={idx}
-                      src={img}
-                      alt="Office"
-                      width={200}
-                      height={50}
-                      className="mx-2 lg:mx-4 inline-block h-28 w-36 lg:h-32 lg:w-64 rounded-lg object-cover shadow-sm"
-                    />
-                  ),
-                )}
+                {[
+                  Workspace_8,
+                  OfficeGathering_6,
+                  Office_9,
+                  BoardRoom_1,
+                ].map((img, idx) => (
+                  <Image
+                    key={idx}
+                    src={img}
+                    alt="Office"
+                    width={200}
+                    height={50}
+                    className="mx-2 lg:mx-4 inline-block h-28 w-36 lg:h-32 lg:w-64 rounded-lg object-cover shadow-sm"
+                  />
+                ))}
               </ScrollVelocityRow>
             </ScrollVelocityContainer>
           </Reveal>

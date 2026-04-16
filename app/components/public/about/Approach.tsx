@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Reveal from "@/components/public/shared/Reveal";
-import heroImg1 from "@/assets/hero-office-1.jpg";
+import HeroImg1 from "@/assets/HeroImg1.jpg";
 
 export default function Approach() {
   return (
@@ -33,7 +33,7 @@ export default function Approach() {
 
         <Reveal delay={0.5}>
           <Image
-            src={heroImg1}
+            src={HeroImg1}
             alt="Modern workspace"
             className="rounded-lg object-cover w-full h-full shadow-lg"
           />

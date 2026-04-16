@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import careersHero from "@/assets/careers-hero.jpg";
-import heroImg1 from "@/assets/hero-office-1.jpg";
-import heroImg2 from "@/assets/hero-office-2.jpg";
+import OfficeGathering_2 from "@/assets/OfficeGathering_2.jpg";
+import Workspace_7 from "@/assets/Workspace_7.jpg";
+import OfficeGathering_3 from "@/assets/OfficeGathering_3.jpg";
 import Reveal from "@/components/public/shared/Reveal";
 import Benefits from "@/components/public/careers/Benefits";
 import Openings from "@/components/public/careers/Openings";
@@ -49,7 +49,7 @@ export default async function CareersPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-10">
-          {[careersHero, heroImg1, heroImg2].map((img, i) => (
+          {[OfficeGathering_2, Workspace_7, OfficeGathering_3].map((img, i) => (
             <Reveal key={i} delay={0.5 + i * 0.15}>
               <Image
                 src={img}
