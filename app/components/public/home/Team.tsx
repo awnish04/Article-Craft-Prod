@@ -6,18 +6,34 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import Reveal from "@/components/public/shared/Reveal";
 
-import team1 from "@/assets/TeamImages/1.png";
-import team2 from "@/assets/TeamImages/2.png";
-import team3 from "@/assets/TeamImages/3.png";
-import team4 from "@/assets/TeamImages/4.png";
-import team5 from "@/assets/TeamImages/5.png";
+import team1 from "@/assets/TeamImages/Team_1.jpg";
+import team2 from "@/assets/TeamImages/Team_2.jpg";
+import team3 from "@/assets/TeamImages/Team_3.jpg";
+import team4 from "@/assets/TeamImages/Team_4.jpg";
+import team5 from "@/assets/TeamImages/Team_5.jpg";
+import team6 from "@/assets/TeamImages/Team_6.jpg";
+import team7 from "@/assets/TeamImages/Team_7.jpg";
+import team8 from "@/assets/TeamImages/Team_8.jpg";
+import team9 from "@/assets/TeamImages/Team_9.jpg";
+import team10 from "@/assets/TeamImages/Team_10.jpg";
 
 // Criss-cross origin offsets for diagonal entry
 const LEFT_ORIGINS = [{ x: -50, y: -50, rotate: -20 }];
 
 const RIGHT_ORIGINS = [{ x: 50, y: 50, rotate: 20 }];
 
-const IMAGES = [team1, team2, team3, team4, team5];
+const IMAGES = [
+  team1,
+  team2,
+  team3,
+  team4,
+  team5,
+  team6,
+  team7,
+  team8,
+  team9,
+  team10,
+];
 
 // Team members for mobile view
 const TEAM_MEMBERS = [
@@ -26,10 +42,15 @@ const TEAM_MEMBERS = [
   { name: "Jane Doe", role: "CTO", img: team3 },
   { name: "Jane Doe", role: "Lead Developer", img: team4 },
   { name: "John Doe", role: "Lead Developer", img: team5 },
+  { name: "John Doe", role: "Lead Developer", img: team6 },
+  { name: "John Doe", role: "Lead Developer", img: team7 },
+  { name: "John Doe", role: "Lead Developer", img: team8 },
+  { name: "John Doe", role: "Lead Developer", img: team9 },
+  { name: "John Doe", role: "Lead Developer", img: team10 },
 ];
 
 // Left column: 5 images in zig-zag pattern - alternating close and far
-const LEFT_COLUMN = Array.from({ length: 5 }, (_, i) => {
+const LEFT_COLUMN = Array.from({ length: 10 }, (_, i) => {
   const isClose = i % 2 === 1;
 
   return {
@@ -40,11 +61,11 @@ const LEFT_COLUMN = Array.from({ length: 5 }, (_, i) => {
 });
 
 // Right column: 5 images in zig-zag pattern - alternating close and far
-const RIGHT_COLUMN = Array.from({ length: 5 }, (_, i) => {
+const RIGHT_COLUMN = Array.from({ length: 10 }, (_, i) => {
   const isClose = i % 2 === 1;
 
   return {
-    img: IMAGES[(i + 1) % IMAGES.length],
+    img: IMAGES[(i + 2) % IMAGES.length],
     offsetX: isClose ? -60 : -250,
     origin: RIGHT_ORIGINS[i % RIGHT_ORIGINS.length],
   };
@@ -102,7 +123,7 @@ export default function Team() {
     <>
       {/* ================= DESKTOP ================= */}
       <section
-        className="hidden md:block relative h-[180vh]"
+        className="hidden md:block relative lg:h-[290vh]"
         style={{ scrollBehavior: "smooth" }}
       >
         {/* Sticky center content */}

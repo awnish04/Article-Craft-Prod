@@ -63,7 +63,7 @@ export default function Testimonials() {
           <p>Let's Hear From Them</p>
         </Reveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
           {testimonials.map((testimonial, i) => (
             <Reveal key={testimonial.name} delay={i * 0.1}>
               <div className="bg-white shadow rounded-xl p-6 hover:shadow-primary hover:shadow transition">

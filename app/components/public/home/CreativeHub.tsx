@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Building2, Users, PartyPopper, Coffee } from "lucide-react";
+import { Building2, Users, PartyPopper, MonitorCog } from "lucide-react";
 
 import Workspace_1 from "@/assets/Workspace_1.jpg";
 import Workspace_2 from "@/assets/Workspace_2.jpg";
 import Workspace_3 from "@/assets/Workspace_3.jpg";
 import Workspace_4 from "@/assets/Workspace_4.jpg";
 import Workspace_5 from "@/assets/Workspace_5.jpg";
+import Workspace_6 from "@/assets/Workspace_6.jpg";
 
 import BoardRoom_1 from "@/assets/BoardRoom_1.jpg";
 import BoardRoom_2 from "@/assets/BoardRoom_2.jpg";
@@ -17,11 +18,12 @@ import BoardRoom_3 from "@/assets/BoardRoom_3.jpg";
 import BoardRoom_4 from "@/assets/BoardRoom_4.jpg";
 import BoardRoom_5 from "@/assets/BoardRoom_5.jpg";
 
-import Lounge_1 from "@/assets/Lounge_1.jpg";
-import Lounge_2 from "@/assets/Lounge_2.jpg";
-import Lounge_3 from "@/assets/Lounge_3.jpg";
-import Lounge_4 from "@/assets/Lounge_4.jpg";
-import Lounge_5 from "@/assets/Lounge_5.jpg";
+import Office_1 from "@/assets/Office_1.jpg";
+import Office_2 from "@/assets/Office_2.jpg";
+import Office_3 from "@/assets/Office_3.jpg";
+import Office_4 from "@/assets/Office_4.jpg";
+import Office_5 from "@/assets/Office_5.jpg";
+import Office_6 from "@/assets/Office_6.jpg";
 
 import OfficeGathering_1 from "@/assets/OfficeGathering_1.jpg";
 import OfficeGathering_2 from "@/assets/OfficeGathering_2.jpg";
@@ -40,20 +42,13 @@ const spaces = [
       Workspace_3,
       Workspace_4,
       Workspace_5,
-      Workspace_5,
+      Workspace_6,
     ],
   },
   {
     Icon: Users,
     name: "Boardroom",
-    images: [
-      BoardRoom_1,
-      BoardRoom_2,
-      BoardRoom_3,
-      BoardRoom_4,
-      BoardRoom_5,
-      BoardRoom_5,
-    ],
+    images: [BoardRoom_1, BoardRoom_2, BoardRoom_3, BoardRoom_4, BoardRoom_5],
   },
   {
     Icon: PartyPopper,
@@ -68,9 +63,9 @@ const spaces = [
     ],
   },
   {
-    Icon: Coffee,
-    name: "Lounge",
-    images: [Lounge_1, Lounge_2, Lounge_3, Lounge_4, Lounge_5, Lounge_5],
+    Icon: MonitorCog,
+    name: "Office",
+    images: [Office_1, Office_2, Office_3, Office_4, Office_5, Office_6],
   },
 ];
 
@@ -78,8 +73,8 @@ const spaces = [
 const gridLayouts = [
   // Layout 0 – no gaps
   [
-    "col-start-1 row-start-1 col-span-2 row-span-2",
     "col-start-3 row-start-1",
+    "col-start-1 row-start-1 col-span-2 row-span-2",
     "col-start-3 row-start-2",
     "col-start-1 row-start-3",
     "col-start-2 row-start-3",
@@ -88,9 +83,9 @@ const gridLayouts = [
 
   // Layout 1 – mirrored
   [
-    "col-start-1 row-start-1",
-    "col-start-1 row-start-2",
     "col-start-2 row-start-1 col-span-2 row-span-2",
+    "col-start-1 row-start-1",
+    "col-start-1 row-start-2 col-span-1 row-span-2",
     "col-start-2 row-start-3",
     "col-start-3 row-start-3",
     "col-start-1 row-start-3", // ✅ added
@@ -98,12 +93,12 @@ const gridLayouts = [
 
   // Layout 2 – wide bottom
   [
-    "col-start-1 row-start-1 col-span-2 row-span-2",
+    "col-start-2 row-start-2 col-span-2 row-span-2",
     "col-start-3 row-start-1",
-    "col-start-3 row-start-2",
+    "col-start-1 row-start-2",
+    "col-start-2 row-start-1",
     "col-start-1 row-start-3",
-    "col-start-3 row-start-3",
-    "col-start-2 row-start-3", // ✅ fills center gap
+    "col-start-1 row-start-1", // ✅ fills center gap
   ],
 
   // Layout 3 – center focus
@@ -122,7 +117,7 @@ export default function CreativeHub() {
   const currentLayout = gridLayouts[activeTab % gridLayouts.length];
 
   return (
-    <section className="bg-gray-50 py-12 lg:py-16">
+    <section className="bg-secondary py-12 lg:py-16">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
         <Reveal delay={0.5}>
@@ -167,7 +162,7 @@ export default function CreativeHub() {
         </div>
 
         {/* Grid + Tabs */}
-        <div className="relative flex gap-4 py-8">
+        <div className="mt-10 grid lg:grid-cols-[1fr_auto] gap-8">
           {/* Image Grid */}
           <div className="flex-1">
             <AnimatePresence mode="wait">
@@ -177,12 +172,12 @@ export default function CreativeHub() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.35 }}
-                className="grid grid-cols-3 auto-rows-[180px] md:auto-rows-[180px] lg:auto-rows-[190px] gap-3"
+                className="grid grid-cols-3 auto-rows-[180px] md:auto-rows-[180px] lg:auto-rows-[210px] gap-3"
               >
                 {spaces[activeTab].images.map((image, idx) => (
                   <motion.div
                     key={idx}
-                    className={`${currentLayout[idx]} rounded-xl overflow-hidden`}
+                    className={`${currentLayout[idx]} rounded-lg overflow-hidden`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.07 }}
@@ -200,15 +195,15 @@ export default function CreativeHub() {
           </div>
 
           {/* Vertical Tabs - Desktop */}
-          <div className="hidden md:flex flex-col gap-3 ml-2">
+          <div className="hidden md:flex flex-col gap-12 ml-2">
             {spaces.map((space, idx) => (
               <motion.button
                 key={idx}
                 onClick={() => setActiveTab(idx)}
-                className={`relative flex flex-col items-center justify-center gap-2 px-3 py-5 rounded-full transition-all duration-300 min-h-[100px] cursor-pointer ${
+                className={`relative flex flex-col items-center justify-center gap-2 px-2 py-4 rounded-full transition-all duration-300 min-h-[100px] cursor-pointer ${
                   activeTab === idx
                     ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-card text-muted-foreground hover:bg-secondary shadow-md"
+                    : "bg-card text-muted-foreground hover:bg-muted shadow-md"
                 }`}
                 whileHover={{ scale: activeTab === idx ? 1.05 : 1.02 }}
                 whileTap={{ scale: 0.98 }}
