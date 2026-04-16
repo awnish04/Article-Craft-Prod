@@ -87,48 +87,47 @@ export default function Openings({ jobs }: Props) {
         {/* Job List */}
         <div className="max-w-4xl mx-auto mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
           {filtered.length === 0 ? (
-            <Reveal delay={0.5}>
-              <div className="col-span-2 py-12 text-center text-muted-foreground">
-                No job openings found.
-              </div>
-            </Reveal>
+            <div className="col-span-2 py-12 text-center text-muted-foreground">
+              No job openings found.
+            </div>
           ) : (
-            filtered.map((job, i) => (
-              <Reveal key={job.id} delay={0.5 + i * 0.08}>
-                <div className="bg-secondary rounded-xl p-5 text-left hover:shadow-sm hover:shadow-primary transition-all ease-in-out duration-400 border border-primary">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-sm font-bold">{job.title}</h3>
-                    <span className="text-xs text-muted-foreground">
-                      {job.type}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {job.location} {job.salary ? `· ${job.salary}` : ""}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Apply now to be part of something exceptional.
-                  </p>
-                  <Link
-                    href={`/careers/jobs/${job.slug}`}
-                    className="inline-flex items-center gap-2 mt-4 text-xs font-semibold text-primary hover:underline"
-                  >
-                    View Details
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
+            filtered.map((job) => (
+              <div
+                key={job.id}
+                className="bg-secondary rounded-xl p-5 text-left hover:shadow-sm hover:shadow-primary transition-all ease-in-out duration-400 border border-primary"
+              >
+                <div className="flex justify-between items-start">
+                  <h3 className="text-sm font-bold">{job.title}</h3>
+                  <span className="text-xs text-muted-foreground">
+                    {job.type}
+                  </span>
                 </div>
-              </Reveal>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {job.location} {job.salary ? `· ${job.salary}` : ""}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Apply now to be part of something exceptional.
+                </p>
+                <Link
+                  href={`/careers/jobs/${job.slug}`}
+                  className="inline-flex items-center gap-2 mt-4 text-xs font-semibold text-primary hover:underline"
+                >
+                  View Details
+                  <svg
+                    className="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
             ))
           )}
         </div>

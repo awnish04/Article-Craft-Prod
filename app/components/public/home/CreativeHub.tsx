@@ -190,7 +190,7 @@ export default function CreativeHub() {
                     <Image
                       src={image}
                       alt={`${spaces[activeTab].name} ${idx + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover hover:scale-105 transition-all duration-400 ease cursor-pointer"
                       loading={idx === 0 ? undefined : "lazy"}
                     />
                   </motion.div>

@@ -12,16 +12,26 @@ const stats = [
 
 export default function StatsSection() {
   return (
-    <section className="bg-secondary py-12 lg:py-16">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section className="bg-secondary">
+      <div className="container mx-auto px-4 lg:px-8 py-12 lg:py-16 items-center text-center">
+        <Reveal delay={0.2}>
+          <h2 className="mb-20">
+            <span className="text-primary">Article Craft</span> Tech Statistics
+          </h2>
+        </Reveal>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
-            <Reveal key={i} delay={i * 0.1}>
-              <div className="text-center">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+            <div
+              key={i}
+              className="text-center transition-all duration-700"
+              style={{ transitionDelay: `${i * 0.15}s` }}
+            >
+              <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              <Reveal delay={0.2}>
                 <p className="text-muted-foreground mt-2">{stat.label}</p>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
           ))}
         </div>
       </div>
@@ -40,39 +50,30 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
         if (entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
           let start = 0;
-          const end = value;
           const duration = 2000;
-          const increment = end / (duration / 16);
-
+          const increment = value / (duration / 16);
           const timer = setInterval(() => {
             start += increment;
-            if (start >= end) {
-              setCount(end);
+            if (start >= value) {
+              setCount(value);
               clearInterval(timer);
             } else {
               setCount(Math.floor(start));
             }
           }, 16);
-
           return () => clearInterval(timer);
         }
       },
       { threshold: 0.5 },
     );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
+    if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, [value, hasAnimated]);
 
   return (
-    <div ref={ref}>
-      <h2 className="text-4xl md:text-5xl font-bold text-primary">
-        {count}
-        {suffix}
-      </h2>
+    <div ref={ref} className="text-3xl md:text-6xl font-extrabold text-primary">
+      {count}
+      {suffix}
     </div>
   );
 }

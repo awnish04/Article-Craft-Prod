@@ -209,10 +209,7 @@ export function JobFormFields({ form, onChange }: Props) {
                 <SelectGroup>
                   {CURRENCIES.map((c) => (
                     <SelectItem key={c.value} value={c.value}>
-                      {c.value}{" "}
-                      <span>
-                        {c.label}
-                      </span>
+                      {c.value} <span>{c.label}</span>
                     </SelectItem>
                   ))}
                 </SelectGroup>

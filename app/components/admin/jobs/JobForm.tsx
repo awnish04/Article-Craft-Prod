@@ -56,23 +56,45 @@ export function JobForm({ open, onClose, editing, onSaved }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title || !form.location) {
-      toast.error("Title and location are required.");
+
+    if (!form.title.trim()) {
+      toast.warning("Job title is required.");
       return;
     }
-    startTransition(async () => {
-      try {
-        if (editing) {
-          const updated = await updateJob(editing.id, form);
-          toast.success("Job updated.");
-          onSaved(updated);
-        } else {
-          const created = await createJob(form);
-          toast.success("Job created.");
-          onSaved(created);
-        }
-      } catch {
-        toast.error("Something went wrong.");
+    if (!form.location.trim()) {
+      toast.warning("Location is required.");
+      return;
+    }
+    if (!form.description.trim()) {
+      toast.warning("Job description is required.");
+      return;
+    }
+
+    startTransition(() => {
+      if (editing) {
+        toast.promise(
+          updateJob(editing.id, form).then((updated) => {
+            onSaved(updated);
+            return updated;
+          }),
+          {
+            loading: "Saving changes...",
+            success: (u) => `"${u.title}" updated successfully.`,
+            error: "Failed to update job. Please try again.",
+          },
+        );
+      } else {
+        toast.promise(
+          createJob(form).then((created) => {
+            onSaved(created);
+            return created;
+          }),
+          {
+            loading: "Creating job posting...",
+            success: (c) => `"${c.title}" posted successfully.`,
+            error: "Failed to create job. Please try again.",
+          },
+        );
       }
     });
   };
@@ -86,7 +108,6 @@ export function JobForm({ open, onClose, editing, onSaved }: Props) {
     >
       <DialogContent className="sm:max-w-2xl p-0 gap-0">
         <form onSubmit={handleSubmit}>
-          {/* Sticky Header */}
           <DialogHeader className="px-6 pt-6 pb-4 border-b border-border">
             <DialogTitle>{editing ? "Edit Job" : "Create New Job"}</DialogTitle>
             <DialogDescription>
@@ -96,12 +117,10 @@ export function JobForm({ open, onClose, editing, onSaved }: Props) {
             </DialogDescription>
           </DialogHeader>
 
-          {/* Scrollable Content */}
           <div className="no-scrollbar max-h-[60vh] overflow-y-auto px-6 py-4">
             <JobFormFields form={form} onChange={handleChange} />
           </div>
 
-          {/* Sticky Footer */}
           <DialogFooter className="px-6 py-4 border-t border-border">
             <DialogClose asChild>
               <Button type="button" variant="outline" disabled={isPending}>
@@ -111,7 +130,7 @@ export function JobForm({ open, onClose, editing, onSaved }: Props) {
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-primary hover:bg-primary/90 text-white gap-1.5 rounded-md"
+              className="bg-primary hover:bg-primary/90 text-white rounded-md"
             >
               {isPending ? (
                 <>

@@ -19,7 +19,6 @@ export function SignupForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -32,25 +31,24 @@ export function SignupForm() {
     };
 
     if (data.password.length < 8) {
-      toast.error("Password must be at least 8 characters long");
-      setLoading(false);
+      toast.warning("Password must be at least 8 characters long.");
       return;
     }
-
     if (data.password !== data.confirmPassword) {
-      toast.error("Passwords do not match");
-      setLoading(false);
+      toast.warning("Passwords do not match. Please check and try again.");
       return;
     }
-
     if (!termsAccepted) {
-      toast.error("Please accept the Terms and Privacy Policies");
-      setLoading(false);
+      toast.warning(
+        "You must accept the Terms and Privacy Policies to continue.",
+      );
       return;
     }
 
-    try {
-      const response = await fetch("/api/auth/signup", {
+    setLoading(true);
+
+    toast.promise(
+      fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -60,19 +58,29 @@ export function SignupForm() {
           phone: data.phone,
           password: data.password,
         }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) throw new Error(result.error || "Signup failed");
-
-      toast.success("Account created successfully!");
-      setTimeout(() => router.push("/login?registered=true"), 1000);
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+      }).then(async (res) => {
+        const result = await res.json();
+        if (res.status === 409)
+          throw new Error(
+            "An account with this email already exists. Try logging in.",
+          );
+        if (res.status === 400)
+          throw new Error(
+            result.error || "Please fill in all required fields.",
+          );
+        if (!res.ok)
+          throw new Error(result.error || "Signup failed. Please try again.");
+        setTimeout(() => router.push("/login?registered=true"), 1000);
+        return result;
+      }),
+      {
+        loading: "Creating your account...",
+        success: "Account created successfully! Redirecting to login...",
+        error: (err) =>
+          err.message ?? "Network error. Please check your connection.",
+        finally: () => setLoading(false),
+      },
+    );
   };
 
   const inputClass =

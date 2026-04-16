@@ -10,6 +10,9 @@ import { db } from "@/lib/db";
 import { jobs } from "@/lib/db/schema";
 import { desc } from "drizzle-orm";
 
+// Revalidate every 60 seconds so new job postings appear without a full rebuild
+export const revalidate = 60;
+
 export default async function CareersPage() {
   let allJobs: (typeof jobs.$inferSelect)[] = [];
   try {

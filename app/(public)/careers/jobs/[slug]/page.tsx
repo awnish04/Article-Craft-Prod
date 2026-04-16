@@ -70,7 +70,7 @@ export default async function JobDetailPage({
             {/* Job Description */}
             {job.description && (
               <div>
-                <h4>About the job</h4>
+                <h4>Job Description</h4>
                 <p>{job.description}</p>
               </div>
             )}

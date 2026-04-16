@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
 export function LoginForm() {
@@ -17,39 +17,58 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (registered) toast.info("Account created! You can now log in.");
+  }, [registered]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const data = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    try {
-      const response = await fetch("/api/auth/login", {
+    if (!email) {
+      toast.warning("Please enter your email address.");
+      return;
+    }
+    if (!password) {
+      toast.warning("Please enter your password.");
+      return;
+    }
+
+    setLoading(true);
+
+    toast.promise(
+      fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) throw new Error(result.error || "Login failed");
-
-      toast.success("Login successful!");
-      setTimeout(() => router.push("/dashboard"), 1000);
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+        body: JSON.stringify({ email, password }),
+      }).then(async (res) => {
+        const result = await res.json();
+        if (res.status === 401)
+          throw new Error("Invalid email or password. Please try again.");
+        if (res.status === 400)
+          throw new Error(
+            result.error || "Please fill in all required fields.",
+          );
+        if (!res.ok)
+          throw new Error(result.error || "Login failed. Please try again.");
+        setTimeout(() => router.push("/dashboard"), 1000);
+        return result;
+      }),
+      {
+        loading: "Logging in...",
+        success: "Welcome back! Redirecting to dashboard...",
+        error: (err) =>
+          err.message ?? "Network error. Please check your connection.",
+        finally: () => setLoading(false),
+      },
+    );
   };
 
   return (
     <div className="w-full max-w-md mx-auto bg-background rounded-xl shadow-sm border border-border p-8">
-      {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-foreground mb-1">
           Login to your account
@@ -59,14 +78,7 @@ export function LoginForm() {
         </p>
       </div>
 
-      {registered && (
-        <div className="mb-4 p-3 bg-primary/10 border border-primary/30 text-primary rounded-sm text-sm">
-          Account created successfully! Please login.
-        </div>
-      )}
-
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Email */}
         <div className="space-y-2">
           <Label
             htmlFor="email"
@@ -85,7 +97,6 @@ export function LoginForm() {
           />
         </div>
 
-        {/* Password */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label
@@ -123,20 +134,12 @@ export function LoginForm() {
           </div>
         </div>
 
-        {/* Submit */}
         <Button
           type="submit"
-          className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg"
           disabled={loading}
+          className="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg"
         >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Logging in...
-            </>
-          ) : (
-            "Login"
-          )}
+          {loading ? "Logging in..." : "Login"}
         </Button>
 
         <p className="text-center text-sm text-muted-foreground">

@@ -45,7 +45,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
               <a
                 href="/services"
-                className="w-full sm:w-auto justify-center inline-flex items-center px-6 py-4 bg-foreground text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out"
+                className="w-full sm:w-auto justify-center inline-flex items-center px-6 py-4 bg-primary text-white rounded-full text-sm font-bold hover:scale-105 transition-all duration-300 ease-out"
               >
                 Get a Free Consultation
               </a>
@@ -104,8 +104,8 @@ export default function Home() {
               </ScrollVelocityRow>
             </ScrollVelocityContainer>
           </Reveal>
-          <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r"></div>
-          <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l"></div>
+          <div className="from-background pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-linear-to-r"></div>
+          <div className="from-background pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-linear-to-l"></div>
         </div>
       </section>
 

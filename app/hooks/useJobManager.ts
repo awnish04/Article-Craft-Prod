@@ -58,13 +58,16 @@ export function useJobManager(initialJobs: Job[]) {
 
   const handleDelete = async (job: Job) => {
     if (!confirm(`Delete "${job.title}"? This cannot be undone.`)) return;
-    try {
-      await deleteJob(job.id);
-      setJobs((prev) => prev.filter((j) => j.id !== job.id));
-      toast.success("Job deleted.");
-    } catch {
-      toast.error("Failed to delete job.");
-    }
+    toast.promise(
+      deleteJob(job.id).then(() => {
+        setJobs((prev) => prev.filter((j) => j.id !== job.id));
+      }),
+      {
+        loading: `Deleting "${job.title}"...`,
+        success: `"${job.title}" has been deleted.`,
+        error: `Failed to delete "${job.title}". Please try again.`,
+      },
+    );
   };
 
   return {

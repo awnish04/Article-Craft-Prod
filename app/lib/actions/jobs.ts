@@ -29,6 +29,7 @@ export async function createJob(
     })
     .returning();
   revalidatePath("/dashboard/jobs");
+  revalidatePath("/careers");
   return created;
 }
 
@@ -42,10 +43,12 @@ export async function updateJob(
     .where(eq(jobs.id, id))
     .returning();
   revalidatePath("/dashboard/jobs");
+  revalidatePath("/careers");
   return updated;
 }
 
 export async function deleteJob(id: number) {
   await db.delete(jobs).where(eq(jobs.id, id));
   revalidatePath("/dashboard/jobs");
+  revalidatePath("/careers");
 }
