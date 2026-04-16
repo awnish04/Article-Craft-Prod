@@ -51,3 +51,6 @@ drizzle/
 # Storybook
 *storybook.log
 storybook-static
+
+app/assets/
+public/
