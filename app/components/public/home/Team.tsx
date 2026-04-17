@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import Reveal from "@/components/public/shared/Reveal";
 
-import team1 from "@/assets/TeamImages/Team_1.jpg";
+
 import team2 from "@/assets/TeamImages/Team_2.jpg";
 import team3 from "@/assets/TeamImages/Team_3.jpg";
 import team4 from "@/assets/TeamImages/Team_4.jpg";
@@ -23,7 +23,6 @@ const LEFT_ORIGINS = [{ x: -50, y: -50, rotate: -20 }];
 const RIGHT_ORIGINS = [{ x: 50, y: 50, rotate: 20 }];
 
 const IMAGES = [
-  team1,
   team2,
   team3,
   team4,
@@ -37,7 +36,6 @@ const IMAGES = [
 
 // Team members for mobile view
 const TEAM_MEMBERS = [
-  { name: "John Doe", role: "Founder & Chairman", img: team1 },
   { name: "John Doe", role: "CEO & Co-Founder", img: team2 },
   { name: "Jane Doe", role: "CTO", img: team3 },
   { name: "Jane Doe", role: "Lead Developer", img: team4 },

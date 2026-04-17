@@ -11,7 +11,7 @@ import Office_9 from "@/assets/Office_9.jpg";
 import OfficeGathering_6 from "@/assets/OfficeGathering_6.jpg";
 import Workspace_8 from "@/assets/Workspace_8.jpg";
 import Workspace_9 from "@/assets/Workspace_9.jpg";
-import Workspace_10 from "@/assets/Workspace_10.jpg";
+import Workspace_11 from "@/assets/Workspace_11.jpg";
 import StatsSection from "@/components/public/home/StatsSection";
 import Team from "@/components/public/home/Team";
 import {
@@ -80,7 +80,7 @@ export default function Home() {
                   Office_8,
                   OfficeGathering_6,
                   Workspace_9,
-                  Workspace_10,
+                  Workspace_11,
                 ].map((img, idx) => (
                   <Image
                     key={idx}
@@ -97,21 +97,18 @@ export default function Home() {
                 direction={-1}
                 className="py-4"
               >
-                {[
-                  Workspace_8,
-                  OfficeGathering_6,
-                  Office_9,
-                  BoardRoom_1,
-                ].map((img, idx) => (
-                  <Image
-                    key={idx}
-                    src={img}
-                    alt="Office"
-                    width={200}
-                    height={50}
-                    className="mx-2 lg:mx-4 inline-block h-28 w-36 lg:h-32 lg:w-64 rounded-lg object-cover shadow-sm"
-                  />
-                ))}
+                {[Workspace_8, OfficeGathering_6, Office_9, BoardRoom_1].map(
+                  (img, idx) => (
+                    <Image
+                      key={idx}
+                      src={img}
+                      alt="Office"
+                      width={200}
+                      height={50}
+                      className="mx-2 lg:mx-4 inline-block h-28 w-36 lg:h-32 lg:w-64 rounded-lg object-cover shadow-sm"
+                    />
+                  ),
+                )}
               </ScrollVelocityRow>
             </ScrollVelocityContainer>
           </Reveal>

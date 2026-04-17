@@ -2,7 +2,7 @@
 
 import Image, { StaticImageData } from "next/image";
 import Reveal from "@/components/public/shared/Reveal";
-import team1 from "@/assets/TeamImages/Team_1.jpg";
+import Leader_1 from "@/assets/TeamImages/Leader_1.jpg";
 import team2 from "@/assets/TeamImages/Team_2.jpg";
 import team3 from "@/assets/TeamImages/Team_3.jpg";
 import team4 from "@/assets/TeamImages/Team_4.jpg";
@@ -21,7 +21,7 @@ const testimonials: Testimonial[] = [
     name: "Ramesh Timalsina",
     role: "Quality Assurance Engineer",
     text: "The collaborative team and focus on innovation drive my commitment to ensuring the highest quality standards. The emphasis on meticulous testing, user-centered design, and continuous professional growth make this an ideal environment for enhancing my skills and delivering flawless products.",
-    img: team1,
+    img: Leader_1,
   },
   {
     name: "Yurika Khanal",

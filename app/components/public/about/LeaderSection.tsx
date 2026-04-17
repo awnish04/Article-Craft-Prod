@@ -8,14 +8,14 @@ import {
 } from "@radix-ui/react-icons";
 import Reveal from "@/components/public/shared/Reveal";
 
-import team3 from "@/assets/team-3.jpg";
-import team5 from "@/assets/team-5.jpg";
+import Leader_1 from "@/assets/TeamImages/Leader_1.jpg";
+import Leader_2 from "@/assets/TeamImages/Leader_2.jpeg";
 
 const leaders = [
   {
-    name: "Emily Carter",
+    name: "Mijash paudyal",
     role: "CEO",
-    img: team3,
+    img: Leader_1,
     social: {
       twitter: "#",
       github: "#",
@@ -23,9 +23,9 @@ const leaders = [
     },
   },
   {
-    name: "James Collins",
+    name: "Riwaj Neupane",
     role: "Co-Founder / CTO",
-    img: team5,
+    img: Leader_2,
     social: {
       twitter: "#",
       github: "#",
@@ -75,7 +75,7 @@ export default function LeaderSection() {
                   <Image
                     src={leader.img}
                     alt={leader.name}
-                    className="w-full h-[380px] md:h-[420px] lg:h-[430px] object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-[380px] md:h-[420px] lg:h-[450px] object-cover transition-transform duration-500 group-hover:scale-105"
                   />
 
                   {/* Info Card */}
