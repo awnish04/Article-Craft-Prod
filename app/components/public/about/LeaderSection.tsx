@@ -14,7 +14,7 @@ import Leader_2 from "@/assets/TeamImages/Leader_2.jpeg";
 const leaders = [
   {
     name: "Mijash paudyal",
-    role: "CEO",
+    role: "",
     img: Leader_1,
     social: {
       twitter: "#",
@@ -24,7 +24,7 @@ const leaders = [
   },
   {
     name: "Riwaj Neupane",
-    role: "Co-Founder / CTO",
+    role: "",
     img: Leader_2,
     social: {
       twitter: "#",
@@ -51,16 +51,16 @@ export default function LeaderSection() {
         {/* Heading */}
         <div className="mb-10 md:mb-14 text-center">
           <Reveal>
-            <h2>
+            <h2 className="max-w-3xl mx-auto md:text-center text-justify">
               Meet The <span className="text-primary">Leaders</span> Behind{" "}
-              <span className="text-primary">Article Craft</span> Tech
+              <span className="text-primary">Article Craft</span>
             </h2>
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p>
-              Our leadership team brings decades of experience in technology,
-              business, and innovation.
+            <p className="max-w-3xl mx-auto md:text-center text-justify ">
+              Our leadership team brings deep expertise in technology,
+              automation, and building products that create lasting impact.
             </p>
           </Reveal>
         </div>
@@ -75,7 +75,7 @@ export default function LeaderSection() {
                   <Image
                     src={leader.img}
                     alt={leader.name}
-                    className="w-full h-[380px] md:h-[420px] lg:h-[450px] object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-[470px] md:h-[420px] lg:h-[450px] object-cover transition-transform duration-500 group-hover:scale-105"
                   />
 
                   {/* Info Card */}

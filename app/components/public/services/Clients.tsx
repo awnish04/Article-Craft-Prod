@@ -53,8 +53,9 @@ export default function Clients() {
             </Reveal>
             <Reveal delay={0.5}>
               <p>
-                Trusted by leading technology companies worldwide to deliver
-                exceptional communication solutions and drive business growth.
+                Trusted by ambitious organizations worldwide to deliver reliable
+                automation, AI, and custom software solutions that drive real
+                results.
               </p>
             </Reveal>
           </div>

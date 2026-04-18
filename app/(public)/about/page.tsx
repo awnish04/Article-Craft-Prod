@@ -23,19 +23,18 @@ export default function AboutPage() {
           <Reveal delay={0.4}>
             <h1>
               <span className="block">
-                Powering a Connected{" "}
-                <span className="text-primary">World </span>
-              </span>
-              <span className="block">
-                With <span className="text-primary">Smarter </span> Technology
+                Building Smarter <span className="text-primary">Software </span>{" "}
+                Driving <span className="text-primary">Intelligent </span>{" "}
+                Automation
               </span>
             </h1>
           </Reveal>
           <Reveal delay={0.5}>
-            <p>
-              We help enterprises break barriers with intelligent VoIP and
-              AI-enabled communication systems built to unify teams, streamline
-              operations, and enable global growth.
+            <p className="max-w-3xl mx-auto md:text-center text-justify">
+              We help organizations work smarter by automating workflows and
+              building reliable, secure software powered by practical AI —
+              reducing manual effort, improving accuracy, and unlocking insights
+              through thoughtful design and continuous optimization.
             </p>
           </Reveal>
         </div>

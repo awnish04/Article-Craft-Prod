@@ -17,16 +17,16 @@ export default function Approach() {
 
           <Reveal delay={0.5}>
             <h2>
-              Building <span className="text-primary">Smarter</span> Digital{" "}
-              <span className="text-primary">Solutions</span>
+              Building <span className="text-primary">Reliable</span> Automation
+              & <span className="text-primary">Software</span>
             </h2>
           </Reveal>
 
           <Reveal delay={0.5}>
             <p>
-              At Article Craft Tech, we turn ideas into reliable digital
-              products. Our team focuses on creating solutions that are easy to
-              use, scalable, and built for long-term success.
+              At Article Craft, we turn complex business challenges into clean,
+              scalable digital solutions. Our team focuses on practical AI,
+              thoughtful automation, and software built for long-term growth.
             </p>
           </Reveal>
         </div>

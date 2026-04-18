@@ -148,7 +148,7 @@
   }
 
   h1 {
-    @apply font-extrabold tracking-tight text-4xl lg:text-6xl leading-tight my-4;
+    @apply font-extrabold tracking-tight text-3xl lg:text-6xl leading-tight my-4;
   }
   h2 {
     @apply font-black    tracking-tight text-3xl md:text-4xl lg:text-5xl leading-tight my-4;
@@ -217,6 +217,15 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 

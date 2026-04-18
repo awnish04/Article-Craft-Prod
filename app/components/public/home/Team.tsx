@@ -20,15 +20,15 @@ import team10 from "@/assets/TeamImages/Team_10.jpg";
 const IMAGES = [team2, team3, team4, team5, team6, team7, team8, team9, team10];
 
 const TEAM_MEMBERS = [
-  { name: "John Doe", role: "CEO & Co-Founder", img: team2 },
-  { name: "Jane Doe", role: "CTO", img: team3 },
-  { name: "Jane Doe", role: "Lead Developer", img: team4 },
-  { name: "John Doe", role: "Lead Developer", img: team5 },
-  { name: "John Doe", role: "Lead Developer", img: team6 },
-  { name: "John Doe", role: "Lead Developer", img: team7 },
-  { name: "John Doe", role: "Lead Developer", img: team8 },
-  { name: "John Doe", role: "Lead Developer", img: team9 },
-  { name: "John Doe", role: "Lead Developer", img: team10 },
+  { img: team2 },
+  { img: team3 },
+  { img: team4 },
+  { img: team5 },
+  { img: team6 },
+  { img: team7 },
+  { img: team8 },
+  { img: team9 },
+  { img: team10 },
 ];
 
 /**
@@ -290,20 +290,18 @@ export default function Team() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 w-full mx-auto">
+          <div className="grid grid-cols-2 gap-4 w-full mx-auto">
             {TEAM_MEMBERS.map((member, i) => (
               <Reveal key={i} delay={i * 0.1}>
                 <div className="text-center">
-                  <div className="relative w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden border-2 border-primary">
+                  <div className="relative w-32 h-32 mx-auto mb-3 rounded-full overflow-hidden border-2 border-primary">
                     <Image
                       src={member.img}
-                      alt={member.name}
+                      alt=""
                       fill
                       className="object-cover object-[center_29%]"
                     />
                   </div>
-                  <h6 className="font-bold">{member.name}</h6>
-                  <h6 className="text-sm">{member.role}</h6>
                 </div>
               </Reveal>
             ))}

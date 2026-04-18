@@ -66,15 +66,15 @@ export default function ServiceDomains() {
               </Reveal>
               <Reveal delay={0.5}>
                 <h2>
-                  Expert <span className="text-primary">Care </span> For Your
-                  Specific <span className="text-primary">Needs</span>
+                  Intelligent <span className="text-primary">Solutions</span>{" "}
+                  For Your Specific <span className="text-primary">Needs</span>
                 </h2>
               </Reveal>
               <Reveal delay={0.5}>
                 <p>
-                  Our expertise lies in crafting scalable, resilient
-                  communication architectures that align with modern enterprise
-                  complexity and unlock operational excellence.
+                  Our expertise lies in crafting scalable, secure software and
+                  automation systems that align with your business goals and
+                  unlock operational excellence from day one.
                 </p>
               </Reveal>
             </div>
@@ -135,7 +135,7 @@ export default function ServiceDomains() {
                 </Reveal>
 
                 <Reveal delay={0.5}>
-                  <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-4 mt-6">
                     <Link
                       href="#"
                       className="w-full sm:w-auto justify-center inline-flex items-center px-6 py-4 text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out"

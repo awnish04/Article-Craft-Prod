@@ -35,7 +35,7 @@ export default function MissionVision() {
                     <Icon className="w-10 h-10 text-primary" />
                     <h3>{card.title}</h3>
                   </div>
-                  <p className="text-muted-foreground">{card.text}</p>
+                  <p className="text-justify">{card.text}</p>
                 </div>
               </Reveal>
             );

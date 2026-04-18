@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ExternalLink, MoveRight } from "lucide-react";
+import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import Reveal from "@/components/public/shared/Reveal";
 
 export default function Contact() {
@@ -12,206 +12,233 @@ export default function Contact() {
     subject: "",
     message: "",
   });
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your message! We'll get back to you soon.");
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-    });
+    setSent(true);
+    setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+    setTimeout(() => setSent(false), 3000);
   };
-  // container mx - auto px - 4 md: px - 8 py - 16 md: py - 24
+
+  const inputClass =
+    "w-full bg-secondary/50 border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:bg-background transition-all duration-200";
+
+  const infoBlocks = [
+    {
+      icon: Phone,
+      label: "Phone",
+      content: (
+        <>
+          <a
+            href="tel:+16168983513"
+            className="block hover:text-primary transition-colors"
+          >
+            +1 616 898 3513
+          </a>
+          <a
+            href="tel:+9779744446642"
+            className="block hover:text-primary transition-colors"
+          >
+            +977 974 444 6642
+          </a>
+        </>
+      ),
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      content: (
+        <a
+          href="mailto:Info@articlecraft.org"
+          className="hover:text-primary transition-colors"
+        >
+          Info@articlecraft.org
+        </a>
+      ),
+    },
+    {
+      icon: MapPin,
+      label: "Office",
+      content: (
+        <>
+          <span className="block">Kathmandu,</span>
+          <span className="block">New Baneshwor, 44600</span>
+          <a
+            href="https://maps.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-2 hover:underline"
+          >
+            <MapPin className="w-3 h-3" /> View on map
+          </a>
+        </>
+      ),
+    },
+    {
+      icon: Clock,
+      label: "Hours",
+      content: (
+        <>
+          <span className="block">Mon – Fri</span>
+          <span className="block text-muted-foreground">9:00 AM – 6:00 PM</span>
+        </>
+      ),
+    },
+  ];
+
   return (
-    <div className="pt-16 lg:pt-28 min-h-screen bg-background">
-      <div className="container grid md:grid-cols-2">
-        {/* Left Side - Info */}
-        <div className="bg-background px-4 lg:px-8 py-8 lg:py-16 flex flex-col justify-between">
-          <div className="w-full">
-            <Reveal delay={0}>
-              <h1 className="mb-8">
-                Let's get
-                <br />
-                in touch
+    <div className="pt-16 lg:pt-28">
+      <section className="container mx-auto px-4 lg:px-8 py-8 lg:pt-0 lg:pb-16">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <Reveal delay={0}>
+            <div className="mb-10">
+              <h1 className="text-4xl lg:text-5xl font-medium leading-tight mb-3">
+                Get in touch
               </h1>
-            </Reveal>
-          </div>
-
-          <div className="space-y-6">
-            <Reveal delay={0.4}>
-              <h6 className="text-muted-foreground">Phone</h6>
-              <div className="flex flex-col">
-                <a
-                  href="tel:+16168983513"
-                  className="text-lg font-semibold hover:text-primary transition-colors"
-                >
-                  +1 616 898 3513
-                </a>
-                <a
-                  href="tel:+16168983513"
-                  className="text-lg font-semibold hover:text-primary transition-colors"
-                >
-                  +977 974 444 6642
-                </a>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.5}>
-              <div>
-                <h6 className="text-muted-foreground">Email</h6>
-                <a
-                  href="mailto:hello@slabs.com"
-                  className="text-lg font-semibold hover:text-primary transition-colors"
-                >
-                  Info@articlecraft.org
-                </a>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.6}>
-              <div>
-                <h6 className="text-muted-foreground">Office</h6>
-                <h6 className="text-muted-foreground text-lg font-semibold">
-                  kathmandu ,<br />
-                  New Baneshwor, 44600
-                </h6>
-                <a
-                  href="https://maps.google.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold mt-2 hover:text-primary transition-colors group"
-                >
-                  See on Google Map
-                  <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-
-        {/* Right Side - Form */}
-        <div className="bg-foreground text-background px-6 md:px-12 lg:px-16 py-12 md:py-16 lg:py-20">
-          <Reveal delay={0.2}>
-            <div className="flex items-start gap-4 mb-12 items-center">
-              <div className="group">
-                <MoveRight
-                  size={100}
-                  strokeWidth={0.5}
-                  className="transition-all duration-300 group-hover:translate-x-2"
-                />
-              </div>
-              <p className="text-muted-foreground max-w-md">
-                Great! We're excited to hear from you and let's start something
-                special together. call us for any inquiry.
+              <p className="text-muted-foreground text-sm max-w-md leading-relaxed">
+                We'd love to hear from you. Fill in the form and our team will
+                respond within 24 hours.
               </p>
             </div>
           </Reveal>
 
-          <Reveal delay={0.3}>
-            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-background">
-              Contact
-            </h2>
-          </Reveal>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Reveal delay={0.4}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <input
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full bg-transparent border-b border-background/30 pb-3 text-background placeholder:text-background/50 focus:outline-none focus:border-background transition-colors"
-                    placeholder="Name"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={(e) =>
-                      setForm({ ...form, email: e.target.value })
-                    }
-                    className="w-full bg-transparent border-b border-background/30 pb-3 text-background placeholder:text-background/50 focus:outline-none focus:border-background transition-colors"
-                    placeholder="Email"
-                  />
-                </div>
+          <div className="grid md:grid-cols-[1fr_2fr] gap-4 items-start">
+            {/* Info Card */}
+            <Reveal delay={0.2}>
+              <div className="bg-background border border-border rounded-2xl p-6 flex flex-col gap-5">
+                {infoBlocks.map((block, i) => (
+                  <div key={block.label}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-7 h-7 rounded-lg bg-secondary flex items-center justify-center">
+                        <block.icon className="w-3.5 h-3.5 text-primary" />
+                      </div>
+                      <span className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                        {block.label}
+                      </span>
+                    </div>
+                    <div className="text-sm font-medium text-foreground leading-relaxed pl-9">
+                      {block.content}
+                    </div>
+                    {i < infoBlocks.length - 1 && (
+                      <div className="mt-5 h-px bg-border" />
+                    )}
+                  </div>
+                ))}
               </div>
             </Reveal>
 
-            <Reveal delay={0.5}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <input
-                    type="tel"
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm({ ...form, phone: e.target.value })
-                    }
-                    className="w-full bg-transparent border-b border-background/30 pb-3 text-background placeholder:text-background/50 focus:outline-none focus:border-background transition-colors"
-                    placeholder="Phone"
-                  />
+            {/* Form Card */}
+            <Reveal delay={0.3}>
+              <div className="bg-background border border-border rounded-2xl p-6 md:p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg font-medium text-foreground">
+                    Send a message
+                  </h2>
                 </div>
-                <div>
-                  <input
-                    type="text"
-                    value={form.subject}
-                    onChange={(e) =>
-                      setForm({ ...form, subject: e.target.value })
-                    }
-                    className="w-full bg-transparent border-b border-background/30 pb-3 text-background placeholder:text-background/50 focus:outline-none focus:border-background transition-colors"
-                    placeholder="Subject"
-                  />
-                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                        Full name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="John Doe"
+                        value={form.name}
+                        onChange={(e) =>
+                          setForm({ ...form, name: e.target.value })
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                        Email address
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="you@example.com"
+                        value={form.email}
+                        onChange={(e) =>
+                          setForm({ ...form, email: e.target.value })
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                        Phone
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="+1 000 000 0000"
+                        value={form.phone}
+                        onChange={(e) =>
+                          setForm({ ...form, phone: e.target.value })
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                        Subject
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Partnership inquiry"
+                        value={form.subject}
+                        onChange={(e) =>
+                          setForm({ ...form, subject: e.target.value })
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
+                      Message
+                    </label>
+                    <textarea
+                      required
+                      rows={5}
+                      placeholder="Describe how we can help you..."
+                      value={form.message}
+                      onChange={(e) =>
+                        setForm({ ...form, message: e.target.value })
+                      }
+                      className={`${inputClass} resize-none`}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 flex-wrap gap-3">
+                    <p className="text-xs text-muted-foreground max-w-[220px] leading-relaxed">
+                      We'll never share your details with third parties.
+                    </p>
+                    <button
+                      type="submit"
+                      className="inline-flex items-center px-6 py-4 text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out"
+                    >
+                      Send message
+                    </button>
+                  </div>
+
+                  {sent && (
+                    <div className="bg-secondary text-primary text-sm text-center py-2.5 rounded-lg font-medium">
+                      Message sent — we'll be in touch shortly.
+                    </div>
+                  )}
+                </form>
               </div>
             </Reveal>
-
-            <Reveal delay={0.6}>
-              <div>
-                <textarea
-                  required
-                  rows={4}
-                  value={form.message}
-                  onChange={(e) =>
-                    setForm({ ...form, message: e.target.value })
-                  }
-                  className="w-full bg-transparent border-b border-background/30 pb-3 text-background placeholder:text-background/50 focus:outline-none focus:border-background transition-colors resize-none"
-                  placeholder="Tell us about your interested in"
-                />
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.7}>
-              <button
-                type="submit"
-                className="w-full items-center px-6 py-4 text-white rounded-full text-md font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out  mt-8"
-                // className="inline-flex items-center px-6 py-4 text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out"
-              >
-                Send To Us
-              </button>
-            </Reveal>
-          </form>
+          </div>
         </div>
-      </div>
-
-      {/* Map Section */}
-      <div className="w-full h-64 md:h-80 lg:h-96 bg-muted">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9476519598093!2d-73.99185368459395!3d40.74844097932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="grayscale"
-        />
-      </div>
+      </section>
     </div>
   );
 }

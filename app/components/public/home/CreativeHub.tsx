@@ -134,7 +134,7 @@ export default function CreativeHub() {
         </Reveal>
 
         <Reveal delay={0.5}>
-          <p>
+          <p className="text-justify">
             More than a workspace, this is a hub of creativity and momentum.
             Built for innovators and problem-solvers, it empowers you to turn
             bold ideas into real-world impact. Here, collaboration meets
@@ -144,12 +144,12 @@ export default function CreativeHub() {
         </Reveal>
 
         {/* Mobile Tabs */}
-        <div className="lg:hidden flex flex-wrap justify-center items-center  gap-2 mt-4 overflow-hidden pb-6">
+        {/* <div className="lg:hidden flex flex-wrap justify-center items-center  gap-2 mt-4 overflow-hidden pb-2">
           {spaces.map((space, idx) => (
             <button
               key={idx}
               onClick={() => setActiveTab(idx)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap text-xs font-semibold transition-all duration-300 ${
+              className={`flex items-center gap-1 px-4 py-2 rounded-full whitespace-nowrap text-xs font-semibold transition-all duration-300 ${
                 activeTab === idx
                   ? "bg-primary text-primary-foreground shadow-lg"
                   : "bg-card text-muted-foreground shadow-md"
@@ -159,10 +159,39 @@ export default function CreativeHub() {
               {space.name}
             </button>
           ))}
+        </div> */}
+
+        <div
+          className="lg:hidden w-full flex justify-start gap-2 overflow-x-auto whitespace-nowrap py-4"
+          style={{
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {spaces.map((space, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveTab(idx)}
+              className={`flex items-center gap-1 px-2.5 py-2 rounded-full text-xs font-semibold transition-all duration-300 cursor-pointer ${
+                activeTab === idx
+                  ? "bg-primary text-primary-foreground shadow-lg"
+                  : "bg-card text-muted-foreground shadow-md"
+              }`}
+            >
+              <space.Icon className="w-4 h-4" />
+              {space.name}
+            </button>
+          ))}
+          <style jsx>{`
+            div::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
         </div>
 
         {/* Grid + Tabs */}
-        <div className="mt-10 grid lg:grid-cols-[1fr_auto] gap-8">
+        <div className="mt-2 lg:mt-10 grid lg:grid-cols-[1fr_auto] gap-8">
           {/* Image Grid */}
           <div className="flex-1">
             <AnimatePresence mode="wait">
@@ -172,7 +201,7 @@ export default function CreativeHub() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.35 }}
-                className="grid grid-cols-3 auto-rows-[180px] md:auto-rows-[180px] lg:auto-rows-[210px] gap-3"
+                className="grid grid-cols-3 auto-rows-[100px] md:auto-rows-[180px] lg:auto-rows-[210px] gap-3"
               >
                 {spaces[activeTab].images.map((image, idx) => (
                   <motion.div
@@ -198,15 +227,14 @@ export default function CreativeHub() {
           <div className="hidden lg:flex flex-col gap-12 ml-2">
             {spaces.map((space, idx) => (
               <button
-                  key={idx}
-                  onClick={() => setActiveTab(idx)}
-                  className={`h-32 w-10 rounded-full text-xs font-medium transition-all flex flex-col items-center justify-center gap-2 ${
-                    activeTab === idx
-                      ? "bg-primary text-white shadow-md"
-                      : "bg-background border border-border hover:border-primary"
-                  }`}
-                >
-
+                key={idx}
+                onClick={() => setActiveTab(idx)}
+                className={`h-32 w-10 rounded-full text-xs font-medium transition-all flex flex-col items-center justify-center gap-2 ${
+                  activeTab === idx
+                    ? "bg-primary text-white shadow-md"
+                    : "bg-background border border-border hover:border-primary"
+                }`}
+              >
                 <space.Icon className="w-5 h-5" />
                 <span
                   className="text-xs font-semibold tracking-wide"

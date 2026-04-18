@@ -20,37 +20,37 @@ const testimonials: Testimonial[] = [
   {
     name: "Ramesh Timalsina",
     role: "Quality Assurance Engineer",
-    text: "The collaborative team and focus on innovation drive my commitment to ensuring the highest quality standards. The emphasis on meticulous testing, user-centered design, and continuous professional growth make this an ideal environment for enhancing my skills and delivering flawless products.",
+    text: "The focus on precision and continuous improvement here is unmatched. Working on automation and AI projects pushes me to raise the bar on quality every day. It's the kind of environment where your work genuinely matters.",
     img: Leader_1,
   },
   {
     name: "Yurika Khanal",
     role: "WordPress Designer",
-    text: "The team is incredibly talented, and the projects are always challenging and rewarding. The supportive atmosphere and emphasis on creativity have allowed me to excel in my role.",
+    text: "Every project brings a new design challenge, and the team always pushes for something better. The culture of creativity and support makes it easy to do your best work consistently.",
     img: team2,
   },
   {
     name: "Darshan Timalsina",
     role: "R&D Associate",
-    text: "The innovative projects and challenges in the platform engineering keep me motivated to push the boundaries of my technical skills. The team's focus on creativity, efficiency, and continuous improvement has been essential in helping me deliver robust, scalable solutions.",
+    text: "Being part of a team that builds real AI and automation solutions is incredibly motivating. The culture rewards curiosity and encourages you to experiment, iterate, and deliver things that actually work in the real world.",
     img: team3,
   },
   {
     name: "Tukanath Paudel",
     role: "Associate Project Manager",
-    text: "The team's dedication to a collaborative environment makes every day exciting. The emphasis on continuous learning and staying ahead of marketing trends has significantly boosted my professional growth.",
+    text: "Managing projects here means working with people who are genuinely invested in outcomes. The collaborative environment and focus on continuous learning have sharpened my skills more than any role before.",
     img: team4,
   },
   {
     name: "Basanta Gurung",
     role: "Associate Project Manager",
-    text: "The team's commitment to efficiency and continuous improvement is inspiring. The supportive environment and focus on professional growth have significantly enhanced my skills.",
+    text: "The team's commitment to delivering on time without cutting corners is something I deeply respect. The supportive culture and clear processes make every project feel achievable, no matter the complexity.",
     img: team5,
   },
   {
     name: "Vidha Sapkota",
     role: "UI/UX Designer",
-    text: "The team's dedication to creating intuitive and visually appealing user experiences inspires me every day. The collaborative environment, combined with a focus on innovation and seamless design, allows me to continually enhance my skills and contribute to impactful projects.",
+    text: "Designing for automation and AI products is a unique challenge, and this team gives you the space to solve it thoughtfully. The collaborative energy and focus on user-centered design keep me inspired every day.",
     img: team6,
   },
 ];
@@ -63,7 +63,7 @@ export default function Testimonials() {
           <h2>
             What Our <span className="text-primary">Team</span> Says
           </h2>
-          <p>Let's Hear From Them</p>
+          <p>The people behind Article Craft, in their own words.</p>
         </Reveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">

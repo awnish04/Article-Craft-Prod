@@ -22,43 +22,43 @@ interface Benefit {
 const benefits: Benefit[] = [
   {
     icon: TrendingUp,
-    title: "Level up career",
-    desc: "Work with experienced engineers and cutting-edge projects.",
+    title: "Career Growth",
+    desc: "Work on real AI and automation products that sharpen your skills fast.",
   },
   {
     icon: DollarSign,
-    title: "Compensation",
-    desc: "Competitive salary for your skill and experience.",
+    title: "Competitive Pay",
+    desc: "Compensation that reflects your skills, experience, and contributions.",
   },
   {
     icon: GraduationCap,
     title: "Mentorship & Learning",
-    desc: "Knowledge sharing, training, and career guidance.",
+    desc: "Hands-on guidance, knowledge sharing, and structured learning paths.",
   },
   {
     icon: Heart,
     title: "Health Benefits",
-    desc: "Comprehensive health and dental coverage.",
+    desc: "Comprehensive health and dental coverage for you and your family.",
   },
   {
     icon: Coffee,
-    title: "Lunch",
-    desc: "Complimentary lunch and refreshments daily.",
+    title: "Daily Meals",
+    desc: "Complimentary lunch and refreshments to keep you energized.",
   },
   {
     icon: Calendar,
-    title: "5 Working Days",
-    desc: "Enjoy a balanced work schedule.",
+    title: "5-Day Work Week",
+    desc: "A structured schedule that respects your time and personal life.",
   },
   {
     icon: Briefcase,
     title: "Work-Life Balance",
-    desc: "Flexible hours to keep you at your best.",
+    desc: "Flexible hours designed to keep you performing at your best.",
   },
   {
     icon: Shield,
     title: "Insurance Coverage",
-    desc: "Full insurance packages for employees.",
+    desc: "Full insurance packages so you can focus on the work that matters.",
   },
 ];
 
@@ -68,13 +68,13 @@ export default function Benefits() {
       <section className="container mx-auto px-4 lg:px-8 py-12 lg:py-16 items-center text-center">
         <Reveal delay={0.5}>
           <h2>
-            Benefits of <span className="text-primary">Working</span> with{" "}
-            <span className="text-primary">Us</span>
+            Benefits of <span className="text-primary">Joining</span>{" "}
+            <span className="text-primary">Article Craft</span>
           </h2>
         </Reveal>
 
         <Reveal delay={0.5}>
-          <p>Grow with our innovative team where technology meets empathy.</p>
+          <p>We invest in our people the same way we invest in our products.</p>
         </Reveal>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">

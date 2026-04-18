@@ -29,21 +29,18 @@ export default async function CareersPage() {
           <Reveal delay={0.4}>
             <h1>
               <span className="block">
-                Shaping the <span className="text-primary">Future</span> with
-              </span>
-              <span className="block">
-                Custom{" "}
-                <span className="text-primary">Software Development</span>
+                Build the <span className="text-primary">Future</span> of{" "}
+                Automation &{" "}
+                <span className="text-primary">Intelligent Software</span>
               </span>
             </h1>
           </Reveal>
           <Reveal delay={0.5}>
-            <p>
-              Article Craft Tech specializes in building robust VoIP
-              infrastructure, leveraging AI-powered communication systems, and
-              delivering strategic integration solutions that optimize
-              workflows, improve customer engagement, and enable businesses to
-              stay ahead in a competitive global market.
+            <p className="max-w-4xl mx-auto md:text-center text-justify ">
+              At Article Craft, we're a team of builders, thinkers, and
+              problem-solvers creating automation systems and AI-powered
+              software that help organizations work smarter. If you want your
+              work to have real impact, you belong here.
             </p>
           </Reveal>
         </div>
@@ -79,13 +76,16 @@ export default async function CareersPage() {
             </Reveal>
             <Reveal delay={0.5}>
               <h2>
-                <span className="text-primary">Join forces</span> with us to
-                craft something{" "}
-                <span className="text-primary">truly exceptional</span>
+                <span className="text-primary">Join the team</span> building
+                something{" "}
+                <span className="text-primary">genuinely impactful</span>
               </h2>
             </Reveal>
             <Reveal delay={0.5}>
-              <p>Check out the perfect employee engagement in action, today.</p>
+              <p>
+                Explore open roles and find where your skills make the biggest
+                difference.
+              </p>
             </Reveal>
             <Reveal delay={0.5}>
               <div className="flex gap-4 mt-6">

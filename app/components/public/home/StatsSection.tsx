@@ -15,7 +15,7 @@ export default function StatsSection() {
     <section className="bg-secondary">
       <div className="container mx-auto px-4 lg:px-8 py-12 lg:py-16 items-center text-center">
         <Reveal delay={0.2}>
-          <h2 className="mb-20">
+          <h2 className="mb-10 lg:mb-20">
             <span className="text-primary">Article Craft</span> Tech Statistics
           </h2>
         </Reveal>
