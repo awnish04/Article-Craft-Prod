@@ -12,14 +12,16 @@ import { toast } from "sonner";
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const registered = searchParams.get("registered");
+  const reset = searchParams.get("reset");
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (registered) toast.info("Account created! You can now log in.");
-  }, [registered]);
+    if (reset === "success") {
+      toast.success("Password reset successfully! You can now log in.");
+    }
+  }, [reset]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -105,7 +107,10 @@ export function LoginForm() {
             >
               Password
             </Label>
-            <Link href="#" className="text-sm text-primary hover:underline">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-primary hover:underline"
+            >
               Forgot your password?
             </Link>
           </div>
@@ -141,16 +146,6 @@ export function LoginForm() {
         >
           {loading ? "Logging in..." : "Login"}
         </Button>
-
-        <p className="text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-primary hover:underline font-medium"
-          >
-            Create an account
-          </Link>
-        </p>
       </form>
     </div>
   );

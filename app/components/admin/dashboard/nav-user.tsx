@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -17,6 +19,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { MoreVertical, User, LogOut } from "lucide-react";
+import { toast } from "sonner";
+
+const IDLE_TIMEOUT = 10 * 60 * 1000; // 10 minutes in milliseconds
 
 export function NavUser({
   user,
@@ -24,6 +29,66 @@ export function NavUser({
   user: { name: string; email: string; avatar: string };
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        toast.success("Logged out successfully");
+        router.push("/login");
+      } else {
+        toast.error("Failed to logout");
+      }
+    } catch (error) {
+      toast.error("An error occurred during logout");
+    }
+  };
+
+  const resetIdleTimer = () => {
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+
+    idleTimerRef.current = setTimeout(() => {
+      toast.error("Session expired due to inactivity");
+      handleLogout();
+    }, IDLE_TIMEOUT);
+  };
+
+  useEffect(() => {
+    // Events that indicate user activity
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+      "click",
+    ];
+
+    // Reset timer on any user activity
+    events.forEach((event) => {
+      document.addEventListener(event, resetIdleTimer);
+    });
+
+    // Start the initial timer
+    resetIdleTimer();
+
+    // Cleanup
+    return () => {
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+      }
+      events.forEach((event) => {
+        document.removeEventListener(event, resetIdleTimer);
+      });
+    };
+  }, []);
 
   const initials = user.name
     .split(" ")
@@ -87,7 +152,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="size-4 mr-2" />
               Log out
             </DropdownMenuItem>

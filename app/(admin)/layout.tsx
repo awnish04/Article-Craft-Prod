@@ -20,7 +20,7 @@ export default async function AdminLayout({
 
   return (
     <TooltipProvider>
-      <Toaster position="top-center" richColors />
+      <Toaster position="top-center" richColors closeButton={false} />
       <AdminShell user={sessionUser}>{children}</AdminShell>
     </TooltipProvider>
   );

@@ -15,7 +15,7 @@ export default function ClientLayout({
 }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster position="top-center" richColors closeButton />
+      <Toaster position="top-center" richColors closeButton={false} />
       <TooltipProvider>
         {children}
         <ScrollToTop />
