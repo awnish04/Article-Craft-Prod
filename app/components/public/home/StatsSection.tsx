@@ -29,7 +29,7 @@ export default function StatsSection() {
             >
               <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               <Reveal delay={0.2}>
-                <p className="text-muted-foreground mt-2">{stat.label}</p>
+                <p className=" mt-2">{stat.label}</p>
               </Reveal>
             </div>
           ))}

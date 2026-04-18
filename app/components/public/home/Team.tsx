@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import Reveal from "@/components/public/shared/Reveal";
 
-
 import team2 from "@/assets/TeamImages/Team_2.jpg";
 import team3 from "@/assets/TeamImages/Team_3.jpg";
 import team4 from "@/assets/TeamImages/Team_4.jpg";
@@ -17,24 +16,9 @@ import team8 from "@/assets/TeamImages/Team_8.jpg";
 import team9 from "@/assets/TeamImages/Team_9.jpg";
 import team10 from "@/assets/TeamImages/Team_10.jpg";
 
-// Criss-cross origin offsets for diagonal entry
-const LEFT_ORIGINS = [{ x: -50, y: -50, rotate: -20 }];
+// ─── constants ────────────────────────────────────────────────────────────────
+const IMAGES = [team2, team3, team4, team5, team6, team7, team8, team9, team10];
 
-const RIGHT_ORIGINS = [{ x: 50, y: 50, rotate: 20 }];
-
-const IMAGES = [
-  team2,
-  team3,
-  team4,
-  team5,
-  team6,
-  team7,
-  team8,
-  team9,
-  team10,
-];
-
-// Team members for mobile view
 const TEAM_MEMBERS = [
   { name: "John Doe", role: "CEO & Co-Founder", img: team2 },
   { name: "Jane Doe", role: "CTO", img: team3 },
@@ -47,48 +31,105 @@ const TEAM_MEMBERS = [
   { name: "John Doe", role: "Lead Developer", img: team10 },
 ];
 
-// Left column: 5 images in zig-zag pattern - alternating close and far
-const LEFT_COLUMN = Array.from({ length: 10 }, (_, i) => {
-  const isClose = i % 2 === 1;
+/**
+ * How many images appear in each side column.
+ * Keeping it at 8 gives a generous scroll without being excessive.
+ */
+const COLUMN_COUNT = 9;
 
-  return {
-    img: IMAGES[(i + 5) % IMAGES.length],
-    offsetX: isClose ? 60 : 250,
-    origin: LEFT_ORIGINS[i % LEFT_ORIGINS.length],
-  };
-});
+/**
+ * Vertical gap between images (px).  Tailwind gap-16 = 64 px.
+ * The scroll section height is derived from this so the columns
+ * never get clipped.
+ */
+const GAP_PX = 80; // roughly gap-20
 
-// Right column: 5 images in zig-zag pattern - alternating close and far
-const RIGHT_COLUMN = Array.from({ length: 10 }, (_, i) => {
-  const isClose = i % 2 === 1;
+// ─── Per-breakpoint layout config ─────────────────────────────────────────────
+//
+//  imgSize   – rendered diameter (px) of each circular avatar
+//  closeX    – inward  offset for the "close" zig-zag step   (px from edge)
+//  farX      – outward offset for the "far"   zig-zag step   (px from edge)
+//  paddingY  – top / bottom padding of each column (px)
+//
+// We embed these as Tailwind + inline-style combinations so they work
+// without a JS resize listener and stay SSR-safe.
 
-  return {
-    img: IMAGES[(i + 2) % IMAGES.length],
-    offsetX: isClose ? -60 : -250,
-    origin: RIGHT_ORIGINS[i % RIGHT_ORIGINS.length],
-  };
-});
+// ─── Column data builders ──────────────────────────────────────────────────────
 
-// Individual team member image component with useInView
+/**
+ * Build column entries.
+ * `side` controls which end of LEFT_ORIGINS / RIGHT_ORIGINS to use.
+ */
+function buildColumn(
+  side: "left" | "right",
+  count: number,
+): Array<{
+  img: (typeof IMAGES)[number];
+  // Tailwind classes for offset – applied via className
+  mdOffsetClass: string;
+  lgOffsetClass: string;
+  origin: { x: number; y: number; rotate: number };
+}> {
+  return Array.from({ length: count }, (_, i) => {
+    const isClose = i % 2 === 1;
+
+    // ── left side: positive translateX moves image inward (right)
+    // ── right side: negative translateX moves image inward (left)
+    let mdOffset: string;
+    let lgOffset: string;
+
+    if (side === "left") {
+      mdOffset = isClose ? "translate-x-12" : "translate-x-32";
+      lgOffset = isClose ? "lg:translate-x-16" : "lg:translate-x-52";
+    } else {
+      mdOffset = isClose ? "-translate-x-12" : "-translate-x-32";
+      lgOffset = isClose ? "lg:-translate-x-16" : "lg:-translate-x-52";
+    }
+
+    const origin =
+      side === "left"
+        ? { x: -50, y: -50, rotate: -20 }
+        : { x: 50, y: 50, rotate: 20 };
+
+    return {
+      img: IMAGES[(i + (side === "left" ? 5 : 2)) % IMAGES.length],
+      mdOffsetClass: mdOffset,
+      lgOffsetClass: lgOffset,
+      origin,
+    };
+  });
+}
+
+const LEFT_COLUMN = buildColumn("left", COLUMN_COUNT);
+const RIGHT_COLUMN = buildColumn("right", COLUMN_COUNT);
+
+// ─── Sub-components ────────────────────────────────────────────────────────────
+
 function TeamMemberImage({
   src,
   alt,
   origin,
+  className = "",
 }: {
   src: any;
   alt: string;
   origin: { x: number; y: number; rotate: number };
+  className?: string;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, {
-    margin: "0px",
-    amount: 0.5,
-  });
+  const isInView = useInView(ref, { margin: "0px", amount: 0.5 });
 
   return (
     <motion.div
       ref={ref}
-      className="relative w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden border border-primary"
+      /**
+       * Size classes:
+       *  md  → w-24 h-24  (96 px)
+       *  lg  → w-32 h-32  (128 px)
+       *  xl  → w-40 h-40  (160 px)
+       */
+      className={`relative w-28 h-28 lg:w-32 lg:h-32 
+                  rounded-full overflow-hidden border border-primary shrink-0 ${className}`}
       animate={
         isInView
           ? { scale: 1, opacity: 1, x: 0, y: 0, rotate: 0 }
@@ -100,10 +141,7 @@ function TeamMemberImage({
               rotate: origin.rotate,
             }
       }
-      transition={{
-        duration: 1,
-        ease: [0.12, 0.8, 0.24, 1],
-      }}
+      transition={{ duration: 1, ease: [0.12, 0.8, 0.24, 1] }}
     >
       <Image
         src={src}
@@ -116,39 +154,58 @@ function TeamMemberImage({
   );
 }
 
+// ─── Main component ────────────────────────────────────────────────────────────
+
 export default function Team() {
+  /**
+   * Scroll-section height calculation
+   * ───────────────────────────────────
+   * We need the outer section to be tall enough that:
+   *   1. The sticky center panel stays visible for a meaningful duration.
+   *   2. ALL column images scroll into view (and trigger useInView).
+   *
+   * Formula:
+   *   totalColumnHeight = COLUMN_COUNT × (imgSize + GAP_PX) + paddingY×2
+   *
+   * For safety we add one extra viewport height so the last image
+   * has room to animate before the section ends.
+   *
+   * We express this in a CSS custom property so it works without JS
+   * and adapts to breakpoints via Tailwind's md/lg prefixes.
+   *
+   * md:  imgSize ≈ 96px  → row ≈ 176px  → 8 rows ≈ 1408px  + 100vh pad
+   * lg:  imgSize ≈ 128px → row ≈ 208px  → 8 rows ≈ 1664px  + 100vh pad
+   * xl:  imgSize ≈ 160px → row ≈ 240px  → 8 rows ≈ 1920px  + 100vh pad
+   *
+   * We round up generously so Tailwind arbitrary values stay clean.
+   */
+
   return (
     <>
-      {/* ================= DESKTOP ================= */}
+      {/* ═══════════════════ DESKTOP (md+) ═══════════════════ */}
       <section
-        className="hidden md:block relative lg:h-[290vh]"
-        style={{ scrollBehavior: "smooth" }}
+        className={`
+          hidden md:block relative
+          md:h-[calc(9*176px+30vh)]
+          lg:h-[calc(9*208px+20vh)]
+          xl:h-[calc(9*240px+5vh)]
+        `}
       >
-        {/* Sticky center content */}
+        {/* Sticky centre ─────────────────────────────────── */}
         <div className="sticky top-0 h-screen flex items-center justify-center pointer-events-none">
-          <div className="relative z-10 max-w-2xl mx-auto px-6 text-center pointer-events-auto">
+          <div className="relative mx-auto px-6 text-start md:text-center pointer-events-auto">
             <Reveal delay={0.5}>
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.2 }}
-              >
+              <h2>
                 Our Creative <span className="text-primary">Team</span>
-              </motion.h2>
+              </h2>
             </Reveal>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
+            <p className="max-w-xl md:mx-auto">
               We&apos;re building a team that shapes how the world&apos;s most
               ambitious companies present themselves.
               <br />
               If that excites you, let&apos;s talk.
-            </motion.p>
+            </p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -159,7 +216,9 @@ export default function Team() {
             >
               <Link
                 href="/careers"
-                className="w-full sm:w-auto justify-center inline-flex items-center px-6 py-4 bg-foreground text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out"
+                className="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-6 py-4
+                           bg-primary text-white rounded-full text-sm font-bold
+                           hover:scale-105 transition-all duration-300 ease-out"
               >
                 Our Team
                 <svg
@@ -180,48 +239,40 @@ export default function Team() {
           </div>
         </div>
 
-        {/* Left column - absolute positioned */}
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="flex flex-col items-start gap-20 py-16">
-            {LEFT_COLUMN.map((member, idx) => (
-              <div
-                key={`left-${idx}`}
-                style={{
-                  transform: `translateX(${member.offsetX}px)`,
-                }}
-              >
-                <TeamMemberImage
-                  src={member.img}
-                  alt="Team member"
-                  origin={member.origin}
-                />
-              </div>
-            ))}
-          </div>
+        {/* Left column ────────────────────────────────────── */}
+        <div className="absolute top-0 left-0 h-full flex flex-col items-start gap-20 py-16 pointer-events-none">
+          {LEFT_COLUMN.map((member, idx) => (
+            <div
+              key={`left-${idx}`}
+              className={`transition-transform ${member.mdOffsetClass} ${member.lgOffsetClass}`}
+            >
+              <TeamMemberImage
+                src={member.img}
+                alt={`Team member ${idx + 1}`}
+                origin={member.origin}
+              />
+            </div>
+          ))}
         </div>
 
-        {/* Right column - absolute positioned with offset */}
-        <div className="absolute top-0 right-0 w-[28%] lg:w-[48%] h-full">
-          <div className="flex flex-col items-end gap-20 py-16">
-            {RIGHT_COLUMN.map((member, idx) => (
-              <div
-                key={`right-${idx}`}
-                style={{
-                  transform: `translateX(${member.offsetX}px)`,
-                }}
-              >
-                <TeamMemberImage
-                  src={member.img}
-                  alt="Team member"
-                  origin={member.origin}
-                />
-              </div>
-            ))}
-          </div>
+        {/* Right column ───────────────────────────────────── */}
+        <div className="absolute top-0 right-0 h-full flex flex-col items-end gap-20 py-16 pointer-events-none">
+          {RIGHT_COLUMN.map((member, idx) => (
+            <div
+              key={`right-${idx}`}
+              className={`transition-transform ${member.mdOffsetClass} ${member.lgOffsetClass}`}
+            >
+              <TeamMemberImage
+                src={member.img}
+                alt={`Team member ${idx + 1}`}
+                origin={member.origin}
+              />
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ================= MOBILE ================= */}
+      {/* ═══════════════════ MOBILE (< md) ═══════════════════ */}
       <section className="md:hidden bg-background py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -231,12 +282,15 @@ export default function Team() {
               </h2>
             </Reveal>
 
-            <p className="mt-4 text-muted-foreground">
-              We build modern digital experiences.
+            <p className="max-w-xl mx-auto text-center">
+              We&apos;re building a team that shapes how the world&apos;s most
+              ambitious companies present themselves.
+              <br />
+              If that excites you, let&apos;s talk.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 max-w-md mx-auto">
+          <div className="grid grid-cols-2 gap-6 w-full mx-auto">
             {TEAM_MEMBERS.map((member, i) => (
               <Reveal key={i} delay={i * 0.1}>
                 <div className="text-center">
@@ -258,7 +312,9 @@ export default function Team() {
           <div className="text-center mt-10">
             <Link
               href="/careers"
-              className="w-auto justify-center inline-flex items-center px-6 py-4 bg-foreground text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out"
+              className="w-auto justify-center inline-flex items-center px-6 py-4
+                         bg-primary text-white rounded-full text-sm font-bold
+                         hover:scale-105 transition-all duration-300 ease-out"
             >
               Our Team →
             </Link>

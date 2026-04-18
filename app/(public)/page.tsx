@@ -25,9 +25,9 @@ export default function Home() {
     <div className="pt-16 lg:pt-28">
       {/* Hero */}
       <section className="container mx-auto px-4 lg:px-8 py-12 lg:py-16 items-center text-center">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <Reveal delay={0.4}>
-            <h1 className="leading-tight">
+            <h1>
               <span className="block">
                 Building <span className="text-primary">Custom</span> Software,
               </span>
@@ -39,7 +39,7 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={0.5}>
-            <p>
+            <p className="max-w-3xl mx-auto md:text-center text-justify ">
               Working with Article Craft has revolutionized our operations.
               Their expertise in both custom software and AI helped us build a
               solution that we couldn't find anywhere else.

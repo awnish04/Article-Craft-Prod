@@ -160,7 +160,7 @@
     @apply font-bold     tracking-tight text-lg  leading-tight my-2;
   }
   p {
-    @apply text-muted-foreground leading-relaxed;
+    @apply text-muted-foreground leading-relaxed lg:text-xl;
   }
   a {
     @apply text-muted-foreground leading-relaxed;

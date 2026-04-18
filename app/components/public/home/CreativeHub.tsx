@@ -127,7 +127,7 @@ export default function CreativeHub() {
         </Reveal>
 
         <Reveal delay={0.5}>
-          <h2 className="text-4xl lg:text-6xl font-bold mb-6">
+          <h2>
             Where <span className="text-primary">Ideas</span> Find Their{" "}
             <span className="text-primary">Edge</span>
           </h2>
@@ -144,7 +144,7 @@ export default function CreativeHub() {
         </Reveal>
 
         {/* Mobile Tabs */}
-        <div className="flex flex-wrap justify-center items-center md:hidden gap-2 mt-4 overflow-hidden pb-6">
+        <div className="lg:hidden flex flex-wrap justify-center items-center  gap-2 mt-4 overflow-hidden pb-6">
           {spaces.map((space, idx) => (
             <button
               key={idx}
@@ -195,7 +195,7 @@ export default function CreativeHub() {
           </div>
 
           {/* Vertical Tabs - Desktop */}
-          <div className="hidden md:flex flex-col gap-12 ml-2">
+          <div className="hidden lg:flex flex-col gap-12 ml-2">
             {spaces.map((space, idx) => (
               <button
                   key={idx}

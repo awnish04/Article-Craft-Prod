@@ -16,7 +16,7 @@ export default function ServicesPage() {
             </h1>
           </Reveal>
           <Reveal delay={0.5}>
-            <p>
+            <p className="max-w-4xl mx-auto md:text-center text-justify ">
               Article Craft Tech specializes in building robust VoIP
               infrastructure, leveraging AI-powered communication systems, and
               delivering strategic integration solutions that optimize
