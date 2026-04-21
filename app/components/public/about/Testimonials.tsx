@@ -18,12 +18,6 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    name: "Ramesh Timalsina",
-    role: "Quality Assurance Engineer",
-    text: "The focus on precision and continuous improvement here is unmatched. Working on automation and AI projects pushes me to raise the bar on quality every day. It's the kind of environment where your work genuinely matters.",
-    img: Leader_1,
-  },
-  {
     name: "Yurika Khanal",
     role: "WordPress Designer",
     text: "Every project brings a new design challenge, and the team always pushes for something better. The culture of creativity and support makes it easy to do your best work consistently.",
@@ -78,9 +72,9 @@ export default function Testimonials() {
                   />
                   <div>
                     <h6 className="font-bold text-sm">{testimonial.name}</h6>
-                    <h6 className="text-xs text-muted-foreground">
+                    {/* <h6 className="text-xs text-muted-foreground">
                       {testimonial.role}
-                    </h6>
+                    </h6> */}
                   </div>
                 </div>
                 <h6 className="text-sm text-muted-foreground leading-relaxed">
