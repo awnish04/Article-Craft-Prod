@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { db } from "@/lib/db";
+import { contacts } from "@/lib/db/schema";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -15,9 +17,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data, error } = await resend.emails.send({
+    // Save to database
+    await db.insert(contacts).values({
+      name,
+      email,
+      phone: phone || null,
+      subject: subject || null,
+      message,
+      status: "unread",
+    });
+
+    // Send email via Resend
+    const { error } = await resend.emails.send({
       from: "ArticleCraft <onboarding@resend.dev>",
-      to: ["articlecraft2026@gmail.com"],
+      to: ["zxoxo372@gmail.com"],
       replyTo: email,
       subject: subject
         ? `[Contact] ${subject}`
@@ -26,14 +39,8 @@ export async function POST(request: NextRequest) {
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e7eb; border-radius: 12px;">
           <h2 style="margin: 0 0 20px; font-size: 20px; color: #111827;">New Contact Form Submission</h2>
           <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #374151;">
-            <tr>
-              <td style="padding: 8px 0; font-weight: 600; width: 100px;">Name</td>
-              <td style="padding: 8px 0;">${name}</td>
-            </tr>
-            <tr>
-              <td style="padding: 8px 0; font-weight: 600;">Email</td>
-              <td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #6366f1;">${email}</a></td>
-            </tr>
+            <tr><td style="padding: 8px 0; font-weight: 600; width: 100px;">Name</td><td style="padding: 8px 0;">${name}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: 600;">Email</td><td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #6366f1;">${email}</a></td></tr>
             ${phone ? `<tr><td style="padding: 8px 0; font-weight: 600;">Phone</td><td style="padding: 8px 0;">${phone}</td></tr>` : ""}
             ${subject ? `<tr><td style="padding: 8px 0; font-weight: 600;">Subject</td><td style="padding: 8px 0;">${subject}</td></tr>` : ""}
           </table>
@@ -48,14 +55,11 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error("Resend error:", error);
-      return NextResponse.json(
-        { error: "Failed to send email" },
-        { status: 500 },
-      );
+      // Still return success since we saved to DB
     }
 
     return NextResponse.json(
-      { message: "Email sent successfully", id: data?.id },
+      { message: "Message sent successfully" },
       { status: 200 },
     );
   } catch (error) {

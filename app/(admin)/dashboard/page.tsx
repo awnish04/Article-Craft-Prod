@@ -1,38 +1,58 @@
 import { SectionCards } from "@/components/admin/dashboard/section-cards";
 import { db } from "@/lib/db";
-import { jobs } from "@/lib/db/schema";
+import { jobs, applications, contacts } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export default async function Page() {
-  let allJobs: (typeof jobs.$inferSelect)[] = [];
-
-  try {
-    allJobs = await db.select().from(jobs);
-  } catch {
-    allJobs = [];
-  }
-
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
+  let allJobs: { createdAt: Date }[] = [];
+  let allApplications: { status: string; createdAt: Date }[] = [];
+  let allContacts: { status: string }[] = [];
+
+  try {
+    [allJobs, allApplications, allContacts] = await Promise.all([
+      db.select({ createdAt: jobs.createdAt }).from(jobs),
+      db
+        .select({
+          status: applications.status,
+          createdAt: applications.createdAt,
+        })
+        .from(applications),
+      db.select({ status: contacts.status }).from(contacts),
+    ]);
+  } catch {
+    // fallback to empty arrays
+  }
+
   const totalJobs = allJobs.length;
-  const fullTimeJobs = allJobs.filter(
-    (j) => j.type?.toLowerCase().includes("full") ?? false,
-  ).length;
-  const locations = new Set(allJobs.map((j) => j.location).filter(Boolean))
-    .size;
-  const industries = new Set(allJobs.map((j) => j.industry).filter(Boolean))
-    .size;
   const recentJobs = allJobs.filter(
     (j) => new Date(j.createdAt) >= startOfMonth,
+  ).length;
+
+  const totalApplications = allApplications.length;
+  const pendingApplications = allApplications.filter(
+    (a) => a.status === "pending",
+  ).length;
+  const recentApplications = allApplications.filter(
+    (a) => new Date(a.createdAt) >= startOfMonth,
+  ).length;
+
+  const totalMessages = allContacts.length;
+  const unreadMessages = allContacts.filter(
+    (c) => c.status === "unread",
   ).length;
 
   return (
     <SectionCards
       totalJobs={totalJobs}
-      fullTimeJobs={fullTimeJobs}
-      locations={locations}
-      industries={industries}
       recentJobs={recentJobs}
+      totalApplications={totalApplications}
+      pendingApplications={pendingApplications}
+      totalMessages={totalMessages}
+      unreadMessages={unreadMessages}
+      recentApplications={recentApplications}
     />
   );
 }

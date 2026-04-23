@@ -1,4 +1,4 @@
-import { Briefcase, MapPin, Clock, Building2 } from "lucide-react";
+import { Briefcase, ClipboardList, MessageSquare, Clock } from "lucide-react";
 import {
   Card,
   CardDescription,
@@ -9,25 +9,29 @@ import {
 
 interface SectionCardsProps {
   totalJobs: number;
-  fullTimeJobs: number;
-  locations: number;
-  industries: number;
   recentJobs: number;
+  totalApplications: number;
+  pendingApplications: number;
+  totalMessages: number;
+  unreadMessages: number;
+  recentApplications: number;
 }
 
 export function SectionCards({
   totalJobs,
-  fullTimeJobs,
-  locations,
-  industries,
   recentJobs,
+  totalApplications,
+  pendingApplications,
+  totalMessages,
+  unreadMessages,
+  recentApplications,
 }: SectionCardsProps) {
   return (
     <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
       <Card className="@container/card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <Briefcase className="size-4" /> Total Job Listings
+            <Briefcase className="size-4" /> Job Postings
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {totalJobs}
@@ -37,58 +41,60 @@ export function SectionCards({
           <div className="line-clamp-1 flex gap-2 font-medium">
             {recentJobs} added this month
           </div>
-          <div className="text-muted-foreground">All active job postings</div>
+          <div className="text-muted-foreground">Total active job listings</div>
         </CardFooter>
       </Card>
 
       <Card className="@container/card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <Clock className="size-4" /> Full-Time Roles
+            <ClipboardList className="size-4" /> Applications
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {fullTimeJobs}
+            {totalApplications}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            {totalJobs - fullTimeJobs} part-time / contract
+            {recentApplications} received this month
           </div>
-          <div className="text-muted-foreground">By employment type</div>
+          <div className="text-muted-foreground">Total job applications</div>
         </CardFooter>
       </Card>
 
       <Card className="@container/card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <MapPin className="size-4" /> Locations
+            <Clock className="size-4" /> Pending Review
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {locations}
+            {pendingApplications}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Unique job locations
+            {totalApplications - pendingApplications} reviewed
           </div>
-          <div className="text-muted-foreground">Across all listings</div>
+          <div className="text-muted-foreground">
+            Applications awaiting review
+          </div>
         </CardFooter>
       </Card>
 
       <Card className="@container/card">
         <CardHeader>
           <CardDescription className="flex items-center gap-2">
-            <Building2 className="size-4" /> Industries
+            <MessageSquare className="size-4" /> Messages
           </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {industries}
+            {totalMessages}
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Sectors represented
+            {unreadMessages} unread
           </div>
-          <div className="text-muted-foreground">Across all job postings</div>
+          <div className="text-muted-foreground">Contact form submissions</div>
         </CardFooter>
       </Card>
     </div>

@@ -59,3 +59,17 @@ export const applications = pgTable("applications", {
 
 export type Application = typeof applications.$inferSelect;
 export type NewApplication = typeof applications.$inferInsert;
+
+export const contacts = pgTable("contacts", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  subject: varchar("subject", { length: 255 }),
+  message: text("message").notNull(),
+  status: varchar("status", { length: 50 }).default("unread").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Contact = typeof contacts.$inferSelect;
+export type NewContact = typeof contacts.$inferInsert;

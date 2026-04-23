@@ -44,9 +44,18 @@ import {
   type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Plus, Trash2 } from "lucide-react";
+import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -76,6 +85,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -84,10 +94,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { type Job } from "@/lib/db/schema";
-import { deleteJob } from "@/lib/actions/jobs";
+import { type Contact } from "@/lib/db/schema";
 import { toast } from "sonner";
-import { JobForm } from "./JobForm";
+
+const STATUS_COLORS: Record<string, string> = {
+  unread: "bg-blue-100 text-blue-800 border-blue-200",
+  read: "bg-gray-100 text-gray-700 border-gray-200",
+  replied: "bg-green-100 text-green-800 border-green-200",
+};
 
 // ─── Drag Handle ─────────────────────────────────────────────────────────────
 
@@ -107,16 +121,126 @@ function DragHandle({ id }: { id: number }) {
   );
 }
 
+// ─── View Dialog ─────────────────────────────────────────────────────────────
+
+function ViewDialog({
+  item,
+  open,
+  onClose,
+}: {
+  item: Contact | null;
+  open: boolean;
+  onClose: () => void;
+}) {
+  if (!item) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-3xl p-0 gap-0 duration-100">
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-border">
+          <DialogTitle>{item.name}</DialogTitle>
+          <DialogDescription>
+            {item.subject ? (
+              <>
+                Subject:{" "}
+                <span className="font-medium text-foreground">
+                  {item.subject}
+                </span>
+              </>
+            ) : (
+              "Contact form submission"
+            )}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="no-scrollbar max-h-[60vh] overflow-y-auto px-6 py-4 space-y-4">
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+                Name
+              </Label>
+              <span className="font-medium">{item.name}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+                Email
+              </Label>
+              <a
+                href={`mailto:${item.email}`}
+                className="text-primary hover:underline"
+              >
+                {item.email}
+              </a>
+            </div>
+            {item.phone && (
+              <div className="flex flex-col gap-1">
+                <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+                  Phone
+                </Label>
+                <span>{item.phone}</span>
+              </div>
+            )}
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+                Received On
+              </Label>
+              <span>
+                {new Date(item.createdAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+                Status
+              </Label>
+              <span
+                className={`inline-flex w-fit items-center px-2 py-0.5 rounded-full text-xs font-medium border capitalize ${STATUS_COLORS[item.status] ?? STATUS_COLORS.unread}`}
+              >
+                {item.status}
+              </span>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="flex flex-col gap-2 text-sm">
+            <Label className="text-xs text-muted-foreground uppercase tracking-wide">
+              Message
+            </Label>
+            <p className="leading-relaxed whitespace-pre-wrap bg-secondary p-4 rounded-lg text-sm">
+              {item.message}
+            </p>
+          </div>
+        </div>
+
+        <DialogFooter className="px-6 py-4 border-t border-border">
+          <a
+            href={`mailto:${item.email}?subject=Re: ${item.subject || "Your message"}`}
+          >
+            <Button variant="outline">Reply via Email</Button>
+          </a>
+          <DialogClose asChild>
+            <Button variant="outline">Close</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 // ─── Draggable Row ────────────────────────────────────────────────────────────
 
 function DraggableRow({
   row,
-  onEdit,
+  onView,
   onDelete,
 }: {
-  row: Row<Job>;
-  onEdit: (job: Job) => void;
-  onDelete: (job: Job) => void;
+  row: Row<Contact>;
+  onView: (item: Contact) => void;
+  onDelete: (item: Contact) => void;
 }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
@@ -145,10 +269,10 @@ function DraggableRow({
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => onEdit(row.original)}
+                    onClick={() => onView(row.original)}
                   >
-                    <Pencil className="size-4 mr-2" />
-                    Edit
+                    <Eye className="size-4 mr-2" />
+                    View
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -176,7 +300,7 @@ function DraggableRow({
 
 // ─── Columns ──────────────────────────────────────────────────────────────────
 
-const columns: ColumnDef<Job>[] = [
+const columns: ColumnDef<Contact>[] = [
   {
     id: "drag",
     header: () => null,
@@ -209,36 +333,41 @@ const columns: ColumnDef<Job>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
-    header: "Title",
+    accessorKey: "name",
+    header: "Sender",
     cell: ({ row }) => (
-      <span className="font-medium text-foreground text-sm">
-        {row.original.title}
-      </span>
+      <div>
+        <p className="font-medium text-foreground text-sm">
+          {row.original.name}
+        </p>
+        <p className="text-xs text-muted-foreground">{row.original.email}</p>
+      </div>
     ),
     enableHiding: false,
   },
   {
-    accessorKey: "location",
-    header: "Location",
+    accessorKey: "subject",
+    header: "Subject",
     cell: ({ row }) => (
       <span className="text-sm text-muted-foreground">
-        {row.original.location}
+        {row.original.subject || <span className="italic">No subject</span>}
       </span>
     ),
   },
   {
-    accessorKey: "type",
-    header: "Type",
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md border border-border text-xs text-foreground">
-        {row.original.type}
+      <span
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border capitalize ${STATUS_COLORS[row.original.status] ?? STATUS_COLORS.unread}`}
+      >
+        {row.original.status}
       </span>
     ),
   },
   {
     accessorKey: "createdAt",
-    header: "Posted On",
+    header: "Received On",
     cell: ({ row }) => (
       <span className="text-sm text-muted-foreground">
         {new Date(row.original.createdAt).toLocaleDateString("en-US", {
@@ -258,12 +387,12 @@ const columns: ColumnDef<Job>[] = [
 
 // ─── Main Table ───────────────────────────────────────────────────────────────
 
-export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
-  const [data, setData] = React.useState(() => initialJobs);
-  const [editingJob, setEditingJob] = React.useState<Job | null>(null);
-  const [formOpen, setFormOpen] = React.useState(false);
-  const [deleteTarget, setDeleteTarget] = React.useState<Job[] | null>(null);
-
+export function ContactsTable({
+  contacts: initialData,
+}: {
+  contacts: Contact[];
+}) {
+  const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -275,6 +404,11 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const [viewItem, setViewItem] = React.useState<Contact | null>(null);
+  const [deleteTarget, setDeleteTarget] = React.useState<Contact[] | null>(
+    null,
+  );
 
   const sortableId = React.useId();
   const sensors = useSensors(
@@ -327,29 +461,20 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
     }
   }
 
-  function handleJobSaved(savedJob: Job) {
-    setData((prev) => {
-      const exists = prev.find((j) => j.id === savedJob.id);
-      return exists
-        ? prev.map((j) => (j.id === savedJob.id ? savedJob : j))
-        : [savedJob, ...prev];
-    });
-    setFormOpen(false);
-    setEditingJob(null);
-  }
-
   async function handleDeleteConfirm() {
     if (!deleteTarget) return;
+    const ids = deleteTarget.map((c) => c.id).join(",");
     try {
-      await Promise.all(deleteTarget.map((j) => deleteJob(j.id)));
+      const res = await fetch(`/api/contact/${ids}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
       setData((prev) =>
-        prev.filter((j) => !deleteTarget.find((d) => d.id === j.id)),
+        prev.filter((c) => !deleteTarget.find((d) => d.id === c.id)),
       );
       table.resetRowSelection();
       toast.success(
         deleteTarget.length > 1
-          ? `${deleteTarget.length} jobs deleted`
-          : `"${deleteTarget[0].title}" deleted`,
+          ? `${deleteTarget.length} messages deleted`
+          : "Message deleted",
       );
     } catch {
       toast.error("Failed to delete. Please try again.");
@@ -360,14 +485,10 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
 
   return (
     <>
-      <JobForm
-        open={formOpen}
-        onClose={() => {
-          setFormOpen(false);
-          setEditingJob(null);
-        }}
-        editing={editingJob}
-        onSaved={handleJobSaved}
+      <ViewDialog
+        item={viewItem}
+        open={!!viewItem}
+        onClose={() => setViewItem(null)}
       />
 
       <AlertDialog
@@ -382,18 +503,19 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
             <AlertDialogTitle>
               Delete{" "}
               {deleteTarget && deleteTarget.length > 1
-                ? `${deleteTarget.length} jobs`
-                : "job posting"}
+                ? `${deleteTarget.length} messages`
+                : "message"}
               ?
             </AlertDialogTitle>
             <AlertDialogDescription>
               {deleteTarget?.length === 1 ? (
                 <>
-                  <strong>&quot;{deleteTarget[0].title}&quot;</strong> will be
-                  permanently deleted. This cannot be undone.
+                  Message from{" "}
+                  <strong>&quot;{deleteTarget[0].name}&quot;</strong> will be
+                  permanently deleted.
                 </>
               ) : (
-                "Selected job postings will be permanently deleted. This cannot be undone."
+                "Selected messages will be permanently deleted. This cannot be undone."
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -411,29 +533,22 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
 
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">Job Postings</h1>
-          <Button
-            onClick={() => {
-              setEditingJob(null);
-              setFormOpen(true);
-            }}
-            className="bg-primary hover:bg-primary/90 text-white gap-1.5 rounded-md"
-          >
-            <Plus className="size-4" />
-            New Job
-          </Button>
+          <h1 className="text-xl font-semibold">Contact Messages</h1>
+          <span className="text-sm text-muted-foreground">
+            {data.length} total
+          </span>
         </div>
 
         <div className="rounded-lg border border-border bg-card">
           {/* Toolbar */}
           <div className="flex items-center justify-between gap-4 p-4 border-b border-border">
             <Input
-              placeholder="Search by title or location..."
+              placeholder="Search by name or email..."
               value={
-                (table.getColumn("title")?.getFilterValue() as string) ?? ""
+                (table.getColumn("name")?.getFilterValue() as string) ?? ""
               }
               onChange={(e) =>
-                table.getColumn("title")?.setFilterValue(e.target.value)
+                table.getColumn("name")?.setFilterValue(e.target.value)
               }
               className="max-w-sm h-9"
             />
@@ -519,11 +634,8 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
                         <DraggableRow
                           key={row.id}
                           row={row}
-                          onEdit={(job) => {
-                            setEditingJob(job);
-                            setFormOpen(true);
-                          }}
-                          onDelete={(job) => setDeleteTarget([job])}
+                          onView={setViewItem}
+                          onDelete={(item) => setDeleteTarget([item])}
                         />
                       ))}
                     </SortableContext>
@@ -533,9 +645,7 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
                         colSpan={columns.length}
                         className="h-24 text-center text-muted-foreground"
                       >
-                        {table.getColumn("title")?.getFilterValue()
-                          ? "No jobs match your search."
-                          : 'No job postings yet. Click "New Job" to create one.'}
+                        No messages yet.
                       </TableCell>
                     </TableRow>
                   )}
@@ -553,7 +663,7 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
             <div className="flex w-full items-center gap-6 lg:w-fit">
               <div className="hidden items-center gap-2 lg:flex">
                 <Label
-                  htmlFor="rows-per-page-jobs"
+                  htmlFor="rows-per-page-contacts"
                   className="text-sm font-medium"
                 >
                   Rows per page
@@ -562,7 +672,7 @@ export function JobsTable({ jobs: initialJobs }: { jobs: Job[] }) {
                   value={`${table.getState().pagination.pageSize}`}
                   onValueChange={(value) => table.setPageSize(Number(value))}
                 >
-                  <SelectTrigger className="w-20" id="rows-per-page-jobs">
+                  <SelectTrigger className="w-20" id="rows-per-page-contacts">
                     <SelectValue
                       placeholder={table.getState().pagination.pageSize}
                     />

@@ -16,6 +16,7 @@ import {
   LayoutDashboard,
   Briefcase,
   ClipboardList,
+  MessageSquare,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -28,6 +29,11 @@ const navItems: { title: string; url: string; icon: LucideIcon }[] = [
     title: "Applications",
     url: "/dashboard/applications",
     icon: ClipboardList,
+  },
+  {
+    title: "Messages",
+    url: "/dashboard/contacts",
+    icon: MessageSquare,
   },
 ];
 
