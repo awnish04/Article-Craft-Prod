@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
 import ScrollToTop from "@/components/public/shared/ScrollToTop";
-import SmoothScroll from "@/components/public/shared/SmoothScroll";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +18,6 @@ export default function ClientLayout({
       <TooltipProvider>
         <ScrollToTop />
         {children}
-        <SmoothScroll />
       </TooltipProvider>
     </QueryClientProvider>
   );

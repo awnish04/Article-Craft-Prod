@@ -5,29 +5,33 @@ import Lenis from "@studio-freight/lenis";
 
 export default function SmoothScroll() {
   useEffect(() => {
-    // Initialize Lenis
     const lenis = new Lenis({
-      duration: 1.2, // Scroll duration (higher = slower, lower = faster)
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
+      duration: 0.9,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 0.8,
+      touchMultiplier: 1.2,
       infinite: false,
     });
 
-    // Animation frame loop
+    // Expose lenis globally so other components can stop/start it
+    (window as any).__lenis = lenis;
+
+    let rafId: number;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
-    // Cleanup
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
+      delete (window as any).__lenis;
     };
   }, []);
 

@@ -7,34 +7,31 @@ import {
   ArrowLeft,
   MapPin,
   Clock,
-  Users,
   Briefcase,
   Building2,
   BadgeDollarSign,
   MonitorCog,
   CalendarClock,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Spinner } from "@/components/ui/spinner";
 import logo from "@/assets/logo-1.png";
+import { useEffect } from "react";
 
-// Mock job data (same as job detail page)
-const jobData = {
-  title: "Senior Software Engineer (Backend)",
-  company: "Article Craft Tech",
-  level: "Senior Level",
-  location: "Remote",
-  type: "Full-time",
-  posted: "2 days ago",
-  deadline: "March 31, 2024",
-  applicants: 24,
-  salary: "$120,000 - $150,000",
-  industry: "Software Development",
-  jobFunction: "Engineering",
+type JobInfo = {
+  id: number;
+  title: string;
+  location: string;
+  type: string;
+  salary: string | null;
+  industry: string | null;
+  jobFunction: string | null;
+  deadline: string | null;
+  createdAt: string;
 };
 
 export default function ApplicationPage({
@@ -44,6 +41,7 @@ export default function ApplicationPage({
 }) {
   const { slug } = use(params);
   const router = useRouter();
+  const [job, setJob] = useState<JobInfo | null>(null);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -56,35 +54,53 @@ export default function ApplicationPage({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    fetch(`/api/jobs/${slug}`)
+      .then((r) => r.json())
+      .then((data) => setJob(data))
+      .catch(() => setJob(null));
+  }, [slug]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const fd = new FormData();
+      fd.append("jobSlug", slug);
+      fd.append("fullName", formData.fullName);
+      fd.append("email", formData.email);
+      fd.append("phone", formData.phone);
+      fd.append("address", formData.address);
+      fd.append("coverLetter", formData.coverLetter);
+      fd.append("portfolio", formData.portfolio);
+      fd.append("linkedIn", formData.linkedIn);
+      if (formData.resume) fd.append("resume", formData.resume);
 
-    console.log("Application submitted:", formData);
+      const res = await fetch("/api/applications", {
+        method: "POST",
+        body: fd,
+      });
 
-    toast.success("Application submitted successfully!", {
-      position: "top-center",
-    });
+      const result = await res.json();
 
-    setIsSubmitting(false);
+      if (!res.ok) throw new Error(result.error || "Submission failed");
 
-    // Redirect back to job page after 2 seconds
-    setTimeout(() => {
-      router.push(`/careers/jobs/${slug}`);
-    }, 2000);
+      toast.success("Application submitted successfully!");
+      setTimeout(() => router.push(`/careers/jobs/${slug}`), 1500);
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="pt-16 lg:py-24">
-      {/* Main Content */}
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {/* Left Column - Application Form */}
           <div className="lg:col-span-2 space-y-4">
-            {/* Back Button */}
             <button
               onClick={() => router.back()}
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-4 transition"
@@ -93,29 +109,27 @@ export default function ApplicationPage({
               Back to Job Details
             </button>
 
-            {/* Form Card */}
             <div className="bg-secondary rounded-xl p-6 border">
-              {/* Job Title & Company */}
               <div className="flex items-center gap-4 mb-6">
                 <Image
                   src={logo}
-                  alt={jobData.company}
+                  alt="Article Craft"
                   className="w-10 h-10 object-contain rounded-full"
                 />
                 <div>
-                  <h3 className="text-xl font-bold">{jobData.title}</h3>
+                  <h3 className="text-xl font-bold">
+                    {job?.title ?? "Loading..."}
+                  </h3>
                   <p className="text-sm text-muted-foreground">
                     Application Form
                   </p>
                 </div>
               </div>
 
-              {/* Application Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Personal Information Section */}
+                {/* Personal Information */}
                 <div>
                   <h4>Personal Information</h4>
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="fullName">
@@ -132,7 +146,6 @@ export default function ApplicationPage({
                         className="mt-1"
                       />
                     </div>
-
                     <div>
                       <Label htmlFor="email">
                         Email Address{" "}
@@ -150,7 +163,6 @@ export default function ApplicationPage({
                         className="mt-1"
                       />
                     </div>
-
                     <div>
                       <Label htmlFor="phone">
                         Phone Number <span className="text-destructive">*</span>
@@ -167,7 +179,6 @@ export default function ApplicationPage({
                         className="mt-1"
                       />
                     </div>
-
                     <div>
                       <Label htmlFor="address">
                         Address <span className="text-destructive">*</span>
@@ -186,10 +197,9 @@ export default function ApplicationPage({
                   </div>
                 </div>
 
-                {/* Professional Information Section */}
+                {/* Professional Information */}
                 <div>
                   <h4>Professional Information</h4>
-
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="coverLetter">
@@ -205,11 +215,10 @@ export default function ApplicationPage({
                             coverLetter: e.target.value,
                           })
                         }
-                        placeholder="Tell us why you're interested in this position and what makes you a great fit..."
+                        placeholder="Tell us why you're interested in this position..."
                         className="min-h-[150px] resize-none mt-1 bg-white"
                       />
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="portfolio">Portfolio URL</Label>
@@ -227,7 +236,6 @@ export default function ApplicationPage({
                           className="mt-1"
                         />
                       </div>
-
                       <div>
                         <Label htmlFor="linkedIn">LinkedIn Profile</Label>
                         <Input
@@ -245,13 +253,10 @@ export default function ApplicationPage({
                         />
                       </div>
                     </div>
-
                     <div>
                       <Label htmlFor="resume">
                         Resume/CV <span className="text-destructive">*</span>
                       </Label>
-
-                      {/* File Upload Area */}
                       <div className="mt-2">
                         {!formData.resume ? (
                           <label
@@ -281,10 +286,7 @@ export default function ApplicationPage({
                                 </span>
                               </p>
                               <p className="text-xs text-muted-foreground">
-                                (Max. File size: 5 MB)
-                              </p>
-                              <p className="text-xs text-muted-foreground mt-2">
-                                Accepted formats: PDF, DOC, DOCX
+                                Max 5 MB · PDF, DOC, DOCX
                               </p>
                             </div>
                             <Input
@@ -354,7 +356,6 @@ export default function ApplicationPage({
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <div className="flex justify-end gap-4 pt-4">
                   <Button
                     type="button"
@@ -372,7 +373,7 @@ export default function ApplicationPage({
                   >
                     {isSubmitting ? (
                       <>
-                        <Spinner data-icon="inline-start" className="mr-2" />
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                         Submitting...
                       </>
                     ) : (
@@ -384,80 +385,77 @@ export default function ApplicationPage({
             </div>
           </div>
 
-          {/* Right Column - Sticky Sidebar (Job Info) */}
+          {/* Right Column - Job Info */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
-              {/* Job Info Card */}
               <div className="bg-secondary rounded-xl p-6 border">
                 <h4 className="mb-4">Job Details</h4>
-
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 text-sm">
                     <Clock className="w-5 h-5 text-primary" />
                     <span className="text-muted-foreground">
-                      Posted {jobData.posted}
+                      {job
+                        ? `Posted ${new Date(job.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`
+                        : "—"}
                     </span>
                   </div>
-
-                  <div className="flex items-center gap-3 text-sm">
-                    <Users className="w-5 h-5 text-primary" />
-                    <span className="text-muted-foreground">
-                      {jobData.applicants} people have applied
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-sm">
-                    <CalendarClock className="w-5 h-5 text-primary" />
-                    <span className="text-muted-foreground">
-                      Deadline: {jobData.deadline}
-                    </span>
-                  </div>
-
+                  {job?.deadline && (
+                    <div className="flex items-center gap-3 text-sm">
+                      <CalendarClock className="w-5 h-5 text-primary" />
+                      <span className="text-muted-foreground">
+                        Deadline: {job.deadline}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-3 text-sm">
                     <MapPin className="w-5 h-5 text-primary" />
                     <span className="text-muted-foreground">
-                      {jobData.location}
+                      {job?.location ?? "—"}
                     </span>
                   </div>
-
-                  <div className="flex items-center gap-3 text-sm">
-                    <BadgeDollarSign className="w-5 h-5 text-primary" />
-                    <span className="text-muted-foreground">
-                      {jobData.salary}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-sm">
-                    <Building2 className="w-5 h-5 text-primary" />
-                    <div>
-                      <p className="font-semibold text-sm">
-                        {jobData.industry}
-                      </p>
-                      <p className="text-xs text-muted-foreground">Industry</p>
+                  {job?.salary && (
+                    <div className="flex items-center gap-3 text-sm">
+                      <BadgeDollarSign className="w-5 h-5 text-primary" />
+                      <span className="text-muted-foreground">
+                        {job.salary}
+                      </span>
                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-sm">
-                    <Briefcase className="w-5 h-5 text-primary" />
-                    <div>
-                      <p className="font-semibold text-sm">{jobData.type}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Employment Type
-                      </p>
+                  )}
+                  {job?.industry && (
+                    <div className="flex items-center gap-3 text-sm">
+                      <Building2 className="w-5 h-5 text-primary" />
+                      <div>
+                        <p className="font-semibold text-sm">{job.industry}</p>
+                        <p className="text-xs text-muted-foreground">
+                          Industry
+                        </p>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-sm">
-                    <MonitorCog className="w-5 h-5 text-primary" />
-                    <div>
-                      <p className="font-semibold text-sm">
-                        {jobData.jobFunction}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Job Functions
-                      </p>
+                  )}
+                  {job?.type && (
+                    <div className="flex items-center gap-3 text-sm">
+                      <Briefcase className="w-5 h-5 text-primary" />
+                      <div>
+                        <p className="font-semibold text-sm">{job.type}</p>
+                        <p className="text-xs text-muted-foreground">
+                          Employment Type
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {job?.jobFunction && (
+                    <div className="flex items-center gap-3 text-sm">
+                      <MonitorCog className="w-5 h-5 text-primary" />
+                      <div>
+                        <p className="font-semibold text-sm">
+                          {job.jobFunction}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Job Function
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

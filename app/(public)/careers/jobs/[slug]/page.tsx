@@ -71,7 +71,8 @@ export default async function JobDetailPage({
             {job.description && (
               <div>
                 <h4>Job Description</h4>
-                <p>{job.description}</p>
+
+                <span className="text-muted-foreground">{job.description}</span>
               </div>
             )}
 
@@ -79,7 +80,7 @@ export default async function JobDetailPage({
             {job.roleSummary && (
               <div>
                 <h4>Role Summary</h4>
-                <p>{job.roleSummary}</p>
+                <span className="text-muted-foreground">{job.roleSummary}</span>
               </div>
             )}
 

@@ -27,13 +27,35 @@ export const jobs = pgTable("jobs", {
   deadline: varchar("deadline", { length: 100 }),
   description: text("description"),
   roleSummary: text("role_summary"),
-  responsibilities: text("responsibilities"), // stored as JSON string
-  requiredSkills: text("required_skills"), // stored as JSON string
-  goodToHave: text("good_to_have"), // stored as JSON string
-  lookingFor: text("looking_for"), // stored as JSON string
+  responsibilities: text("responsibilities"),
+  requiredSkills: text("required_skills"),
+  goodToHave: text("good_to_have"),
+  lookingFor: text("looking_for"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export type Job = typeof jobs.$inferSelect;
 export type NewJob = typeof jobs.$inferInsert;
+
+export const applications = pgTable("applications", {
+  id: serial("id").primaryKey(),
+  jobId: serial("job_id").references(() => jobs.id, { onDelete: "cascade" }),
+  jobTitle: varchar("job_title", { length: 255 }).notNull(),
+  jobSlug: varchar("job_slug", { length: 255 }).notNull(),
+  fullName: varchar("full_name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }).notNull(),
+  address: varchar("address", { length: 500 }).notNull(),
+  coverLetter: text("cover_letter").notNull(),
+  portfolio: varchar("portfolio", { length: 500 }),
+  linkedIn: varchar("linked_in", { length: 500 }),
+  resumeFileName: varchar("resume_file_name", { length: 255 }),
+  resumeData: text("resume_data"),
+  resumeMimeType: varchar("resume_mime_type", { length: 100 }),
+  status: varchar("status", { length: 50 }).default("pending").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Application = typeof applications.$inferSelect;
+export type NewApplication = typeof applications.$inferInsert;
