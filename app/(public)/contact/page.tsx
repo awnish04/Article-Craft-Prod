@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Clock, Phone, Mail } from "lucide-react";
+import { MapPin, Clock, Phone, Mail, Loader2 } from "lucide-react";
 import Reveal from "@/components/public/shared/Reveal";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -12,13 +15,32 @@ export default function Contact() {
     subject: "",
     message: "",
   });
-  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
-    setForm({ name: "", email: "", phone: "", subject: "", message: "" });
-    setTimeout(() => setSent(false), 3000);
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send message");
+      }
+
+      toast.success("Message sent — we'll be in touch shortly!");
+      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputClass =
@@ -81,7 +103,9 @@ export default function Contact() {
       content: (
         <>
           <span className="block">Mon – Fri</span>
-          <span className="block text-muted-foreground">9:00 AM – 6:00 PM</span>
+          <span className="block text-muted-foreground">
+            10:00 AM – 05:00 PM
+          </span>
         </>
       ),
     },
@@ -107,7 +131,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-[1fr_2fr] gap-4 items-start">
             {/* Info Card */}
             <Reveal delay={0.2}>
-              <div className="bg-background border border-border rounded-2xl p-6 flex flex-col gap-5">
+              <div className="bg-background border border-primary rounded-lg p-6 flex flex-col gap-5">
                 {infoBlocks.map((block, i) => (
                   <div key={block.label}>
                     <div className="flex items-center gap-2 mb-2">
@@ -131,7 +155,7 @@ export default function Contact() {
 
             {/* Form Card */}
             <Reveal delay={0.3}>
-              <div className="bg-background border border-border rounded-2xl p-6 md:p-8">
+              <div className="bg-background border border-primary rounded-lg p-6 md:p-8">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-medium text-foreground">
                     Send a message
@@ -144,7 +168,7 @@ export default function Contact() {
                       <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
                         Full name
                       </label>
-                      <input
+                      <Input
                         type="text"
                         required
                         placeholder="John Doe"
@@ -159,7 +183,7 @@ export default function Contact() {
                       <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
                         Email address
                       </label>
-                      <input
+                      <Input
                         type="email"
                         required
                         placeholder="you@example.com"
@@ -174,7 +198,7 @@ export default function Contact() {
                       <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
                         Phone
                       </label>
-                      <input
+                      <Input
                         type="tel"
                         placeholder="+1 000 000 0000"
                         value={form.phone}
@@ -188,7 +212,7 @@ export default function Contact() {
                       <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
                         Subject
                       </label>
-                      <input
+                      <Input
                         type="text"
                         placeholder="e.g. Partnership inquiry"
                         value={form.subject}
@@ -204,7 +228,7 @@ export default function Contact() {
                     <label className="text-xs font-medium tracking-widest uppercase text-muted-foreground">
                       Message
                     </label>
-                    <textarea
+                    <Textarea
                       required
                       rows={5}
                       placeholder="Describe how we can help you..."
@@ -222,17 +246,13 @@ export default function Contact() {
                     </p>
                     <button
                       type="submit"
-                      className="inline-flex items-center px-6 py-4 text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out"
+                      disabled={loading}
+                      className="inline-flex items-center gap-2 px-6 py-4 text-white rounded-full text-sm font-bold bg-primary hover:scale-105 transition-all duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
-                      Send message
+                      {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      {loading ? "Sending..." : "Send message"}
                     </button>
                   </div>
-
-                  {sent && (
-                    <div className="bg-secondary text-primary text-sm text-center py-2.5 rounded-lg font-medium">
-                      Message sent — we'll be in touch shortly.
-                    </div>
-                  )}
                 </form>
               </div>
             </Reveal>

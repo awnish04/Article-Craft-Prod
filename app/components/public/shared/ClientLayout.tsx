@@ -17,8 +17,8 @@ export default function ClientLayout({
     <QueryClientProvider client={queryClient}>
       <Toaster position="top-center" richColors closeButton={false} />
       <TooltipProvider>
-        {children}
         <ScrollToTop />
+        {children}
         <SmoothScroll />
       </TooltipProvider>
     </QueryClientProvider>

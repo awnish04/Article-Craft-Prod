@@ -2,12 +2,12 @@
 
 import Image, { StaticImageData } from "next/image";
 import Reveal from "@/components/public/shared/Reveal";
-import Leader_1 from "@/assets/TeamImages/Leader_1.jpg";
 import team2 from "@/assets/TeamImages/Team_2.jpg";
 import team3 from "@/assets/TeamImages/Team_3.jpg";
-import team4 from "@/assets/TeamImages/Team_4.jpg";
+import team8 from "@/assets/TeamImages/Team_8.jpg";
 import team5 from "@/assets/TeamImages/Team_5.jpg";
 import team6 from "@/assets/TeamImages/Team_6.jpg";
+import team7 from "@/assets/TeamImages/Team_7.jpg";
 
 interface Testimonial {
   name: string;
@@ -33,7 +33,7 @@ const testimonials: Testimonial[] = [
     name: "Tukanath Paudel",
     role: "Associate Project Manager",
     text: "Managing projects here means working with people who are genuinely invested in outcomes. The collaborative environment and focus on continuous learning have sharpened my skills more than any role before.",
-    img: team4,
+    img: team8,
   },
   {
     name: "Basanta Gurung",
@@ -46,6 +46,12 @@ const testimonials: Testimonial[] = [
     role: "UI/UX Designer",
     text: "Designing for automation and AI products is a unique challenge, and this team gives you the space to solve it thoughtfully. The collaborative energy and focus on user-centered design keep me inspired every day.",
     img: team6,
+  },
+  {
+    name: "Priya Shrestha",
+    role: "Frontend Developer",
+    text: "Working at the intersection of design and technology means every day looks different. The team pushes you to write clean, thoughtful code while keeping the user experience at the center of every decision it's the kind of environment where you grow fast.",
+    img: team7,
   },
 ];
 
@@ -68,16 +74,16 @@ export default function Testimonials() {
                   <Image
                     src={testimonial.img}
                     alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
+                    className="w-12 h-12 rounded-full object-cover object-[center_29%]"
                   />
                   <div>
-                    <h6 className="font-bold text-sm">{testimonial.name}</h6>
+                    {/* <h6 className="font-bold text-sm">{testimonial.name}</h6> */}
                     {/* <h6 className="text-xs text-muted-foreground">
                       {testimonial.role}
                     </h6> */}
                   </div>
                 </div>
-                <h6 className="text-sm text-muted-foreground leading-relaxed">
+                <h6 className="text-sm text-muted-foreground leading-relaxed text-justify">
                   {testimonial.text}
                 </h6>
               </div>

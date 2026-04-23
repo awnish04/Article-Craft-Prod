@@ -1,27 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
 export function LoginForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const reset = searchParams.get("reset");
-
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (reset === "success") {
-      toast.success("Password reset successfully! You can now log in.");
-    }
-  }, [reset]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -107,12 +97,6 @@ export function LoginForm() {
             >
               Password
             </Label>
-            <Link
-              href="/forgot-password"
-              className="text-sm text-primary hover:underline"
-            >
-              Forgot your password?
-            </Link>
           </div>
           <div className="relative">
             <Input

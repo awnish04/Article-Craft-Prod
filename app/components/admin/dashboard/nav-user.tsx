@@ -21,7 +21,7 @@ import {
 import { MoreVertical, User, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
-const IDLE_TIMEOUT = 10 * 60 * 1000; // 10 minutes in milliseconds
+const IDLE_TIMEOUT = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 export function NavUser({
   user,

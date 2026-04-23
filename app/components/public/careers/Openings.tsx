@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, SearchX } from "lucide-react";
 import Link from "next/link";
 import Reveal from "@/components/public/shared/Reveal";
 import type { Job } from "@/lib/db/schema";
+import { Badge } from "@/components/ui/badge";
 
 const categories = [
   "All positions",
@@ -66,7 +67,7 @@ export default function Openings({ jobs }: Props) {
             </div>
 
             {/* Categories */}
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-4 items-center justify-center">
               {categories.map((cat) => (
                 <button
                   key={cat}
@@ -85,52 +86,77 @@ export default function Openings({ jobs }: Props) {
         </Reveal>
 
         {/* Job List */}
-        <div className="max-w-4xl mx-auto mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {filtered.length === 0 ? (
-            <div className="col-span-2 py-12 text-center text-muted-foreground">
-              No job openings found.
-            </div>
-          ) : (
-            filtered.map((job) => (
-              <div
-                key={job.id}
-                className="bg-secondary rounded-xl p-5 text-left hover:shadow-sm hover:shadow-primary transition-all ease-in-out duration-400 border border-primary"
-              >
-                <div className="flex justify-between items-start">
-                  <h3 className="text-sm font-bold">{job.title}</h3>
-                  <span className="text-xs text-muted-foreground">
-                    {job.type}
-                  </span>
+        <Reveal delay={0.5}>
+          <div
+            className={`max-w-4xl mx-auto mt-8 ${
+              filtered.length === 1
+                ? "flex justify-center"
+                : "grid grid-cols-1 lg:grid-cols-2 gap-4"
+            }`}
+          >
+            {filtered.length === 0 ? (
+              <div className="col-span-2 py-12 text-center border border-primary rounded-lg">
+                <div className="max-w-md mx-auto">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                    <SearchX className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    No job openings found
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    We couldn't find any positions matching your search. Try
+                    adjusting your filters or check back later for new
+                    opportunities.
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {job.location} {job.salary ? `· ${job.salary}` : ""}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Apply now to be part of something exceptional.
-                </p>
-                <Link
-                  href={`/careers/jobs/${job.slug}`}
-                  className="inline-flex items-center gap-2 mt-4 text-xs font-semibold text-primary hover:underline"
-                >
-                  View Details
-                  <svg
-                    className="w-3 h-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
               </div>
-            ))
-          )}
-        </div>
+            ) : (
+              filtered.map((job) => (
+                <div
+                  key={job.id}
+                  className={`bg-secondary rounded-xl p-5 text-left hover:shadow-sm hover:shadow-primary transition-all ease-in-out duration-400 border border-primary ${
+                    filtered.length === 1 ? "max-w-md w-full" : ""
+                  }`}
+                >
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-lg font-bold">{job.title}</h3>
+
+                    <Badge>{job.type}</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {job.location} {job.salary ? `· ${job.salary}` : ""}
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Apply now to be part of something exceptional.
+                  </p>
+                  <Link
+                    href={`/careers/jobs/${job.slug}`}
+                    className="group inline-flex items-center gap-2 mt-4 text-sm font-semibold text-primary"
+                  >
+                    <span className="relative">
+                      View Details
+                      <span className="absolute left-0 -bottom-0.5 h-px w-0 bg-current transition-all duration-300 group-hover:w-full" />
+                    </span>
+
+                    <svg
+                      className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              ))
+            )}
+          </div>
+        </Reveal>
       </section>
     </div>
   );

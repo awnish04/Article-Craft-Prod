@@ -14,7 +14,7 @@ import Leader_2 from "@/assets/TeamImages/Leader_2.jpeg";
 const leaders = [
   {
     name: "Mijash paudyal",
-    role: "",
+    role: "CEO",
     img: Leader_1,
     social: {
       twitter: "#",
@@ -24,7 +24,7 @@ const leaders = [
   },
   {
     name: "Riwaj Neupane",
-    role: "",
+    role: "Director",
     img: Leader_2,
     social: {
       twitter: "#",

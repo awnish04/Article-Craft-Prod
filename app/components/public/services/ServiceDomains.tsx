@@ -143,7 +143,7 @@ export default function ServiceDomains() {
                       Details Services
                     </Link>
                     <Link
-                      href="#"
+                      href="/contact"
                       className="w-full sm:w-auto justify-center border border-border bg-white hover:border-primary inline-flex items-center px-6 py-4 rounded-full text-sm font-bold hover:scale-105 transition-all duration-300 ease-out text-black"
                     >
                       Book Appointment
