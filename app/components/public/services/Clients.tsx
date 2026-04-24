@@ -6,12 +6,16 @@ import Reveal from "@/components/public/shared/Reveal";
 const clients = [
   { name: "Mijaro", logo: "/ClientLogo/MijaroLogo.png" },
   { name: "Tatwam", logo: "/ClientLogo/Tatwamlogo.png" },
+  { name: "KabaddiFilms", logo: "/ClientLogo/KabaddiFIlms.jpg" },
   { name: "Mijaro", logo: "/ClientLogo/MijaroLogo.png" },
   { name: "Tatwam", logo: "/ClientLogo/Tatwamlogo.png" },
+  { name: "KabaddiFilms", logo: "/ClientLogo/KabaddiFIlms.jpg" },
   { name: "Mijaro", logo: "/ClientLogo/MijaroLogo.png" },
   { name: "Tatwam", logo: "/ClientLogo/Tatwamlogo.png" },
+  { name: "KabaddiFilms", logo: "/ClientLogo/KabaddiFIlms.jpg" },
   { name: "Mijaro", logo: "/ClientLogo/MijaroLogo.png" },
   { name: "Tatwam", logo: "/ClientLogo/Tatwamlogo.png" },
+  { name: "KabaddiFilms", logo: "/ClientLogo/KabaddiFIlms.jpg" },
 ];
 
 const LogoCard = ({

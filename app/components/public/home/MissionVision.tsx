@@ -26,10 +26,10 @@ export default function MissionVision() {
         </Reveal>
 
         <div className="grid md:grid-cols-2 gap-8 mt-10">
-          {missionVisionData.map((card, i) => {
+          {missionVisionData.map((card) => {
             const Icon = card.icon;
             return (
-              <Reveal key={card.title} delay={i * 0.5}>
+              <Reveal key={card.title} delay={0.5}>
                 <div className="bg-white rounded-xl p-8 border border-primary hover:shadow-primary hover:shadow transition-shadow">
                   <div className="flex justift-center items-center gap-4">
                     <Icon className="w-10 h-10 text-primary" />
